@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="shark_manufacturer" Name="shark_manufacturer" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Together</Vendor>
+        <Created>2005-01-14 11:42:00</Created>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="UNDER_TEST">
+        <Author>V.Puskas</Author>
+        <Version>0.1</Version>
+    </RedefinableHeader>
+    <ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <Script Type="text/java"/>
+    <WorkflowProcesses>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="manufacturer" Name="Shark Demo Manufacturer">
+            <ProcessHeader DurationUnit="D">
+                <Created>2005-01-14 11:42:23</Created>
+                <Description>Process that after some waiting returns simple data.</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>V.Puskas</Author>
+                <Version>0.11</Version>
+            </RedefinableHeader>
+            <FormalParameters>
+                <FormalParameter Id="product_code" Mode="IN">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="product_quantity" Mode="IN">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="order_date" Mode="IN">
+                    <DataType>
+                        <BasicType Type="DATETIME"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="order_number" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="retailer_name" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="availability_date" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="DATETIME"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="manufacturer_name" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="manufacturer_code" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <Applications>
+                <Application Id="drink" Name="beer pause">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ToolAgentClassProxy" Value="org.enhydra.shark.toolagent.BshToolAgent"/>
+                        <ExtendedAttribute Name="Script" Value="/* beer pause */&#10; long liter = 60000+new java.util.Random().nextLong() % 3000;&#10; java.lang.System.err.println(&quot;I'll drink &quot;+liter+&quot; liters&quot;);&#10; try { java.lang.Thread.sleep(liter);} catch (InterruptedException e) {}&#10;/* end of beer pause */"/>
+                        <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.SchedulerToolAgent"/>
+                    </ExtendedAttributes>
+                </Application>
+                <Application Id="sweatshop" Name="sweatshop">
+                    <Description>A sad, svi na svoje radne zadakte!!!</Description>
+                    <FormalParameters>
+                        <FormalParameter Id="availability_date" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="DATETIME"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="manufacturer_name" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="STRING"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="manufacturer_code" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="INTEGER"/>
+                            </DataType>
+                        </FormalParameter>
+                    </FormalParameters>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.BshToolAgent"/>
+                        <ExtendedAttribute Name="Script" Value="/* sweat-shop */&#10; availability_date = new Date(java.lang.System.currentTimeMillis());&#10; manufacturer_name = &quot;Made by Enhydra Shark manufacturer&quot;;&#10; manufacturer_code = new java.lang.Long(100+ new java.util.Random().nextLong()%100);&#10;/* end of sweat-shop */"/>
+                    </ExtendedAttributes>
+                </Application>
+            </Applications>
+            <Activities>
+                <Activity Id="a" Name="wait">
+                    <Implementation>
+                        <Tool Id="drink" Type="APPLICATION"/>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Manual/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="260"/>
+                        <ExtendedAttribute Name="YOffset" Value="60"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="b" Name="sweatshop">
+                    <Implementation>
+                        <Tool Id="sweatshop" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>availability_date</ActualParameter>
+                                <ActualParameter>manufacturer_name</ActualParameter>
+                                <ActualParameter>manufacturer_code</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="430"/>
+                        <ExtendedAttribute Name="YOffset" Value="60"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="a" Id="manufacturer_Tra1" To="b">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+    </WorkflowProcesses>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.4.2"/>
+    </ExtendedAttributes>
+</Package>

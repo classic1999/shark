@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="Business_Example" Name="Business Example" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Together</Vendor>
+        <Created>2003-03-18 18:14:22</Created>
+        <Description>This is a modified part of WfMC example from document WfMC TC-1016-X - "Interface 1: Process Definition Interchange Q&amp;A and Examples"</Description>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="UNDER_TEST"/>
+    <ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <Script Type="text/javascript"/>
+    <ExternalPackages>
+        <ExternalPackage href="Participant_Repository.xpdl"/>
+        <ExternalPackage href="Application_Repository.xpdl"/>
+        <ExternalPackage href="Process_Repository.xpdl"/>
+    </ExternalPackages>
+    <TypeDeclarations>
+        <TypeDeclaration Id="Business_Example_Typ1" Name="Stock Status">
+            <BasicType Type="STRING"/>
+        </TypeDeclaration>
+        <TypeDeclaration Id="Business_Example_Typ2" Name="Status">
+            <BasicType Type="STRING"/>
+        </TypeDeclaration>
+    </TypeDeclarations>
+    <WorkflowProcesses>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="Business_Example_Wor1" Name="Sales Order Processing">
+            <ProcessHeader DurationUnit="D">
+                <Created>13-03-2003</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST"/>
+            <DataFields>
+                <DataField Id="Stock_Status" IsArray="FALSE">
+                    <DataType>
+                        <DeclaredType Id="Business_Example_Typ1"/>
+                    </DataType>
+                    <InitialValue>ALL</InitialValue>
+                    <Description>Stock status of ordered item (possible values are: "ALL", "PARTIAL" and "NONE")</Description>
+                </DataField>
+                <DataField Id="Credit_Status" IsArray="FALSE">
+                    <DataType>
+                        <DeclaredType Id="Business_Example_Typ2"/>
+                    </DataType>
+                    <InitialValue>NOT_OK</InitialValue>
+                    <Description>Current credit status of customer that made an order ("OK" if credit status is valid)</Description>
+                </DataField>
+                <DataField Id="Partial_Ship_Status" IsArray="FALSE">
+                    <DataType>
+                        <DeclaredType Id="Business_Example_Typ2"/>
+                    </DataType>
+                    <InitialValue>OK</InitialValue>
+                    <Description>possible values are: "OK" and "NOT_OK"</Description>
+                </DataField>
+                <DataField Id="No_Of_Stocked_Items" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <InitialValue>0</InitialValue>
+                    <Description>The number of the stocked items of the product that customer ordered</Description>
+                </DataField>
+                <DataField Id="Customer_Name" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The name of the customer (organization) which order is received</Description>
+                </DataField>
+                <DataField Id="Product_Name" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The name of product that customer ordered</Description>
+                </DataField>
+                <DataField Id="Order_Quantity" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <InitialValue>0</InitialValue>
+                    <Description>The number of ordered items</Description>
+                </DataField>
+                <DataField Id="No_Of_Items_To_Produce" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <InitialValue>0</InitialValue>
+                </DataField>
+            </DataFields>
+            <ActivitySets>
+                <ActivitySet Id="Business_Example_Wor1_Ase1">
+                    <Activities>
+                        <Activity Id="ship" Name="ship">
+                            <Description>Ship from stock or production</Description>
+                            <Implementation>
+                                <No/>
+                            </Implementation>
+                            <Performer>Participant_Repository_Par13</Performer>
+                            <StartMode>
+                                <Automatic/>
+                            </StartMode>
+                            <FinishMode>
+                                <Automatic/>
+                            </FinishMode>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par13"/>
+                                <ExtendedAttribute Name="XOffset" Value="226"/>
+                                <ExtendedAttribute Name="YOffset" Value="86"/>
+                                <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Customer_Name"/>
+                            </ExtendedAttributes>
+                        </Activity>
+                        <Activity Id="received_in_good_condition" Name="received in good condition">
+                            <Description>Report to the manager if the items are received in good condition</Description>
+                            <Implementation>
+                                <No/>
+                            </Implementation>
+                            <Performer>Participant_Repository_Par13</Performer>
+                            <StartMode>
+                                <Automatic/>
+                            </StartMode>
+                            <FinishMode>
+                                <Automatic/>
+                            </FinishMode>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par13"/>
+                                <ExtendedAttribute Name="XOffset" Value="382"/>
+                                <ExtendedAttribute Name="YOffset" Value="86"/>
+                            </ExtendedAttributes>
+                        </Activity>
+                    </Activities>
+                    <Transitions>
+                        <Transition From="ship" Id="Business_Example_Wor1_Ase1_Tra2" Name="Transition" To="received_in_good_condition">
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                            </ExtendedAttributes>
+                        </Transition>
+                    </Transitions>
+                </ActivitySet>
+            </ActivitySets>
+            <Activities>
+                <Activity Id="Business_Example_Wor1_Act1" Name="receive order">
+                    <Description>Enter the data for current order (Customer name, the product name and the desired number of product items)</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par11</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par11"/>
+                        <ExtendedAttribute Name="XOffset" Value="229"/>
+                        <ExtendedAttribute Name="YOffset" Value="12"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="Customer_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="Product_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="Order_Quantity"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act3" Name="check finances">
+                    <Description>Credit-checking process</Description>
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="Business_Example_Wor3">
+                            <ActualParameters>
+                                <ActualParameter>Customer_Name</ActualParameter>
+                                <ActualParameter>Product_Name</ActualParameter>
+                                <ActualParameter>Order_Quantity</ActualParameter>
+                                <ActualParameter>Credit_Status</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra55"/>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra5"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par11"/>
+                        <ExtendedAttribute Name="XOffset" Value="397"/>
+                        <ExtendedAttribute Name="YOffset" Value="12"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act4" Name="check stock">
+                    <Description>Check the stock status of ordered product. Fill the variable Stock_Status with:
+- "ALL" If there are enough items on stock,
+- "PARTIAL" - if there are some stocked items (but not enough)
+- "NONE" - if there are no any stocked item</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par11</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra80"/>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra57"/>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra58"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par11"/>
+                        <ExtendedAttribute Name="XOffset" Value="397"/>
+                        <ExtendedAttribute Name="YOffset" Value="93"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="Stock_Status"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="No_Of_Stocked_Items"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Product_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Order_Quantity"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act5" Name="decline order">
+                    <Description>Tell customer they haven't credit for order</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par11</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par11"/>
+                        <ExtendedAttribute Name="XOffset" Value="585"/>
+                        <ExtendedAttribute Name="YOffset" Value="12"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Customer_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Product_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Order_Quantity"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act9" Name="R1">
+                    <Description>For partial shipments, check with customer and plan production in parallel</Description>
+                    <Route/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra12"/>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra13"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par11"/>
+                        <ExtendedAttribute Name="XOffset" Value="397"/>
+                        <ExtendedAttribute Name="YOffset" Value="179"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act10" Name="check part. ship">
+                    <Description>Ask customer if OK to partial-ship (24 hrs)</Description>
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="Business_Example_Wor2">
+                            <ActualParameters>
+                                <ActualParameter>Customer_Name</ActualParameter>
+                                <ActualParameter>Product_Name</ActualParameter>
+                                <ActualParameter>Order_Quantity</ActualParameter>
+                                <ActualParameter>No_Of_Stocked_Items</ActualParameter>
+                                <ActualParameter>Partial_Ship_Status</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra47"/>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra16"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par11"/>
+                        <ExtendedAttribute Name="XOffset" Value="592"/>
+                        <ExtendedAttribute Name="YOffset" Value="179"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act11" Name="plan part. production">
+                    <Description>Make plan assuming OK to partial-ship</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par12</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par12"/>
+                        <ExtendedAttribute Name="XOffset" Value="397"/>
+                        <ExtendedAttribute Name="YOffset" Value="29"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="No_Of_Items_To_Produce"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Order_Quantity"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="No_Of_Stocked_Items"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act13" Name="R2">
+                    <Description>For partial production, wait until check with customer</Description>
+                    <Route/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="AND"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par12"/>
+                        <ExtendedAttribute Name="XOffset" Value="397"/>
+                        <ExtendedAttribute Name="YOffset" Value="122"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act14" Name="plan full production">
+                    <Description>Either out-of-stock condition or rejection of partial ship can start full-order planning. Make plan to produce entire order</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par12</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par12"/>
+                        <ExtendedAttribute Name="XOffset" Value="760"/>
+                        <ExtendedAttribute Name="YOffset" Value="226"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="No_Of_Stocked_Items"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Order_Quantity"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="No_Of_Items_To_Produce"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act18" Name="produce">
+                    <Description>Assemble parts, execute plan</Description>
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="Process_Repository_Wor2">
+                            <ActualParameters>
+                                <ActualParameter>Product_Name</ActualParameter>
+                                <ActualParameter>No_Of_Items_To_Produce</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par12"/>
+                        <ExtendedAttribute Name="XOffset" Value="397"/>
+                        <ExtendedAttribute Name="YOffset" Value="226"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act19" Name="Notify full shipment">
+                    <Implementation>
+                        <SubFlow Execution="ASYNCHR" Id="Process_Repository_Wor1">
+                            <ActualParameters>
+                                <ActualParameter>Customer_Name</ActualParameter>
+                                <ActualParameter>Product_Name</ActualParameter>
+                                <ActualParameter>Order_Quantity</ActualParameter>
+                                <ActualParameter>Order_Quantity</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="Business_Example_Wor1_Tra24"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par11"/>
+                        <ExtendedAttribute Name="XOffset" Value="230"/>
+                        <ExtendedAttribute Name="YOffset" Value="179"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act20" Name="Notify partial shipment">
+                    <Implementation>
+                        <SubFlow Execution="ASYNCHR" Id="Process_Repository_Wor1">
+                            <ActualParameters>
+                                <ActualParameter>Customer_Name</ActualParameter>
+                                <ActualParameter>Product_Name</ActualParameter>
+                                <ActualParameter>Order_Quantity</ActualParameter>
+                                <ActualParameter>No_Of_Items_To_Produce</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par12"/>
+                        <ExtendedAttribute Name="XOffset" Value="397"/>
+                        <ExtendedAttribute Name="YOffset" Value="310"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor1_Act21" Name="Ship &amp; Report">
+                    <BlockActivity BlockId="Business_Example_Wor1_Ase1"/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="StartOfBlock" Value="Participant_Repository_Par13;ship;114;86;NOROUTING"/>
+                        <ExtendedAttribute Name="EndOfBlock" Value="Participant_Repository_Par13;received_in_good_condition;540;86;NOROUTING"/>
+                        <ExtendedAttribute Name="ParticipantVisualOrder" Value="Participant_Repository_Par13;"/>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par12"/>
+                        <ExtendedAttribute Name="XOffset" Value="397"/>
+                        <ExtendedAttribute Name="YOffset" Value="407"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="Business_Example_Wor1_Act1" Id="Business_Example_Wor1_Tra3" Name="t2" To="Business_Example_Wor1_Act3">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act3" Id="Business_Example_Wor1_Tra5" Name="t5" To="Business_Example_Wor1_Act5">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act9" Id="Business_Example_Wor1_Tra12" Name="t13" To="Business_Example_Wor1_Act10">
+                    <Description>After wait for both stock to be checked and order released ask customer about partial ship</Description>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act9" Id="Business_Example_Wor1_Tra13" Name="Transition" To="Business_Example_Wor1_Act11">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act11" Id="Business_Example_Wor1_Tra15" Name="t17" To="Business_Example_Wor1_Act13">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act13" Id="Tra21" Name="t21" To="Business_Example_Wor1_Act18">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act10" Id="Business_Example_Wor1_Tra16" Name="t16" To="Business_Example_Wor1_Act14">
+                    <Condition Type="OTHERWISE"/>
+                    <Description>Partial ship is not approved</Description>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="772;199;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act14" Id="Business_Example_Wor1_Tra18" Name="t18" To="Business_Example_Wor1_Act18">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act3" Id="Business_Example_Wor1_Tra55" Name="Transition" To="Business_Example_Wor1_Act4">
+                    <Condition Type="CONDITION">Credit_Status == "OK"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act4" Id="Business_Example_Wor1_Tra57" Name="Transition" To="Business_Example_Wor1_Act9">
+                    <Condition Type="CONDITION">Stock_Status == "PARTIAL"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act4" Id="Business_Example_Wor1_Tra58" Name="Transition" To="Business_Example_Wor1_Act14">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="797;113;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act4" Id="Business_Example_Wor1_Tra80" Name="Transition" To="Business_Example_Wor1_Act19">
+                    <Condition Type="CONDITION">Stock_Status == "ALL"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="267;113;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act18" Id="Business_Example_Wor1_Tra104" Name="Transition" To="Business_Example_Wor1_Act20">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act20" Id="Business_Example_Wor1_Tra23" Name="Transition" To="Business_Example_Wor1_Act21">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act19" Id="Business_Example_Wor1_Tra24" Name="Transition" To="Business_Example_Wor1_Act21">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="267;656;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="Business_Example_Wor1_Act10" Id="Business_Example_Wor1_Tra47" Name="Transition" To="Business_Example_Wor1_Act13">
+                    <Condition Type="CONDITION">Partial_Ship_Status == "OK"</Condition>
+                    <Description>Partial ship is approved.</Description>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="629;371;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="Participant_Repository_Par11;Business_Example_Wor1_Act1;127;12;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="Participant_Repository_Par11;Business_Example_Wor1_Act5;750;12;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="Participant_Repository_Par12;Business_Example_Wor1_Act21;593;407;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="Participant_Repository_Par11;Participant_Repository_Par12;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="Business_Example_Wor2" Name="Customer Service - Request for Partial Shipment">
+            <ProcessHeader DurationUnit="D">
+                <Created>13-03-2003</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST"/>
+            <FormalParameters>
+                <FormalParameter Id="Customer_Name" Index="1" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The customer (or customer organization) name</Description>
+                </FormalParameter>
+                <FormalParameter Id="Product_Name" Index="2" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The product name</Description>
+                </FormalParameter>
+                <FormalParameter Id="Ordered_Quantity" Index="3" Mode="IN">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <Description>The number of ordered items</Description>
+                </FormalParameter>
+                <FormalParameter Id="No_Of_Stocked_Items" Index="4" Mode="IN">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <Description>The number of ordered items on stock</Description>
+                </FormalParameter>
+                <FormalParameter Id="Partial_Ship_Status" Index="5" Mode="OUT">
+                    <DataType>
+                        <DeclaredType Id="Business_Example_Typ2"/>
+                    </DataType>
+                    <Description>If customer aggreed on partial shipment, set the value of this variable to "OK", otherwise to anything else ("NOT_OK" for e.g.)</Description>
+                </FormalParameter>
+            </FormalParameters>
+            <Activities>
+                <Activity Id="Business_Example_Wor2_Act4" Name="notify sales">
+                    <Description>Enter the customer response ("OK" if customer accepts partial shipment)</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par10</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par10"/>
+                        <ExtendedAttribute Name="XOffset" Value="381"/>
+                        <ExtendedAttribute Name="YOffset" Value="70"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="Partial_Ship_Status"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="Business_Example_Wor2_Act2" Name="ask customer for partial shipment">
+                    <Description>Asks customer if it is OK to partialy ship the existing number of wanted items</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par10</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par10"/>
+                        <ExtendedAttribute Name="XOffset" Value="226"/>
+                        <ExtendedAttribute Name="YOffset" Value="70"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Customer_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Product_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Order_Quantity"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="No_Of_Stocked_Items"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="Business_Example_Wor2_Act2" Id="Business_Example_Wor2_Tra23" Name="Transition" To="Business_Example_Wor2_Act4">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="Participant_Repository_Par10;Business_Example_Wor2_Act2;128;70;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="Participant_Repository_Par10;Business_Example_Wor2_Act4;527;70;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="Participant_Repository_Par10;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="Business_Example_Wor3" Name="Check Credit">
+            <ProcessHeader DurationUnit="D">
+                <Created>13-03-2003</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST"/>
+            <FormalParameters>
+                <FormalParameter Id="Customer_Name" Index="1" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The customer to check credit status for</Description>
+                </FormalParameter>
+                <FormalParameter Id="Product_Name" Index="2" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The product that customer wants</Description>
+                </FormalParameter>
+                <FormalParameter Id="Order_Quantity" Index="3" Mode="IN">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <Description>The number of items of wanted product</Description>
+                </FormalParameter>
+                <FormalParameter Id="Credit_Status" Index="4" Mode="INOUT">
+                    <DataType>
+                        <DeclaredType Id="Business_Example_Typ2"/>
+                    </DataType>
+                    <Description>The credit status. If credit status is high enough to cover 25% of ordered items price, the value has to be set to "OK"</Description>
+                </FormalParameter>
+            </FormalParameters>
+            <Activities>
+                <Activity Id="Business_Example_Wor3_Act1" Name="check credit">
+                    <Description>Check the credit status of the customer. If the customer has enough money to cover 25% of ordered items price, allow further order processing by setting the Credit_Status value to "OK"</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par9</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par9"/>
+                        <ExtendedAttribute Name="XOffset" Value="288"/>
+                        <ExtendedAttribute Name="YOffset" Value="70"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Customer_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Product_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Order_Quantity"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="Credit_Status"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="Participant_Repository_Par9;Business_Example_Wor3_Act1;117;70;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="Participant_Repository_Par9;Business_Example_Wor3_Act1;508;70;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="Participant_Repository_Par9;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+    </WorkflowProcesses>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.4.2"/>
+    </ExtendedAttributes>
+</Package>

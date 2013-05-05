@@ -1,0 +1,21 @@
+<html>
+   <body>
+      <p>
+	 Process locking component interface.
+      </p>
+      <p>
+	 In order to prevent possible concurrent attempts at process
+	 instance Shark has a synchronization mechanism. Since Shark should
+	 be safely executed from multiple virtual machines, it is obvious
+	 that Java's <tt>synchronized</tt> keyword won't suffice.
+      </p>
+      <p>
+	 This component helps the kernel keep up with concurrent clients,
+	 keeping the record of processes (actually their Id's), that already
+	 have another client accessing it. If a process is locked,
+	 implementation may wait a while (configuration parameter), holding
+	 the kernel (client application) until process becomes available
+	 again.
+      </p>
+   </body>
+</html>

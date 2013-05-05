@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="Process_Repository" Name="Process Repository" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Together</Vendor>
+        <Created>22-Mar-2003</Created>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="UNDER_TEST"/>
+    <ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <Script Type="text/javascript"/>
+    <ExternalPackages>
+        <ExternalPackage href="Participant_Repository.xpdl"/>
+        <ExternalPackage href="Application_Repository.xpdl"/>
+    </ExternalPackages>
+    <WorkflowProcesses>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="Process_Repository_Wor1" Name="Customer Service - notify customer">
+            <ProcessHeader DurationUnit="D">
+                <Created>13-03-2003</Created>
+                <Description>Notifies customer that some or all of the ordered items are beeing shiped to him.</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST"/>
+            <FormalParameters>
+                <FormalParameter Id="Customer_Name" Index="1" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The name of the customer</Description>
+                </FormalParameter>
+                <FormalParameter Id="Product_Name" Index="2" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The ordered product name</Description>
+                </FormalParameter>
+                <FormalParameter Id="Ordered_Quantity" Index="3" Mode="IN">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <Description>The number of ordered items</Description>
+                </FormalParameter>
+                <FormalParameter Id="No_Of_Available_Items" Index="4" Mode="IN">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <Description>The number of items beeing shipped</Description>
+                </FormalParameter>
+            </FormalParameters>
+            <Activities>
+                <Activity Id="Process_Repository_Wor1_Act1" Name="notify customer">
+                    <Description>Notify customer that some or all of the ordered items will be delivered</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par10</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par10"/>
+                        <ExtendedAttribute Name="XOffset" Value="284"/>
+                        <ExtendedAttribute Name="YOffset" Value="77"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Customer_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Product_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Order_Quantity"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="No_Of_Available_Items"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="Participant_Repository_Par10;Process_Repository_Wor1_Act1;103;77;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="Participant_Repository_Par10;Process_Repository_Wor1_Act1;509;77;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="Participant_Repository_Par10;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="Process_Repository_Wor2" Name="Produce Widgets">
+            <ProcessHeader DurationUnit="D">
+                <Created>13-03-2003</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST"/>
+            <FormalParameters>
+                <FormalParameter Id="Product_Name" Index="1" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The name of the product to produce</Description>
+                </FormalParameter>
+                <FormalParameter Id="No_Of_Items_To_Produce" Index="2" Mode="IN">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <Description>The number of items to produce</Description>
+                </FormalParameter>
+            </FormalParameters>
+            <Activities>
+                <Activity Id="Process_Repository_Wor2_Act1" Name="Receive order">
+                    <Description>Produces the given number of items of the given produce.</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>Participant_Repository_Par8</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="Participant_Repository_Par8"/>
+                        <ExtendedAttribute Name="XOffset" Value="310"/>
+                        <ExtendedAttribute Name="YOffset" Value="73"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="Product_Name"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="No_Of_Items_To_Produce"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="Participant_Repository_Par8;Process_Repository_Wor2_Act1;122;73;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="Participant_Repository_Par8;Process_Repository_Wor2_Act1;520;73;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="Participant_Repository_Par8;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+    </WorkflowProcesses>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.0"/>
+    </ExtendedAttributes>
+</Package>

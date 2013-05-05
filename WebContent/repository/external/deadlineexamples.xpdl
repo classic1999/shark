@@ -1,0 +1,1281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="deadline_examples" Name="Deadline Examples" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:vx="http://www.an.danet.de/2002/XPDL-Extensions1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Together</Vendor>
+        <Created>2004-03-10 12:30:33</Created>
+        <Description>Various processes showing how can you set activity's deadlines for Shark</Description>
+        <Documentation>deadlineexamples.txt</Documentation>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="UNDER_TEST">
+        <Author>Sasa Bojanic</Author>
+        <Version>Version</Version>
+    </RedefinableHeader>
+    <Script Type="text/javascript"/>
+    <Participants>
+        <Participant Id="somerole">
+            <ParticipantType Type="ROLE"/>
+        </Participant>
+    </Participants>
+    <Applications>
+        <Application Id="logger">
+            <FormalParameters>
+                <FormalParameter Id="activityId" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>The Id of activity definition</Description>
+                </FormalParameter>
+                <FormalParameter Id="additional_log_msg" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>Additional message for logging</Description>
+                </FormalParameter>
+                <FormalParameter Id="log" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <Description>Execution log</Description>
+                </FormalParameter>
+            </FormalParameters>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.JavaScriptToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="log=log+&quot;\n&quot;+&quot;Activity for definition &quot;+activityId+&quot; is executed at &quot;+(new java.util.Date()).toString()+&quot; - &quot;+additional_log_msg;"/>
+            </ExtendedAttributes>
+        </Application>
+        <Application Id="printLog">
+            <FormalParameters>
+                <FormalParameter Id="logmsg" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.JavaScriptToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="java.lang.System.out.println(&quot;LOG MESSAGE=&quot;+logmsg);"/>
+            </ExtendedAttributes>
+        </Application>
+    </Applications>
+    <WorkflowProcesses>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="simple_sync_deadline" Name="Simple SYNC deadline">
+            <ProcessHeader>
+                <Created>2004-03-10 13:57:57</Created>
+                <Description>If activity "Do something" is not executed within 15 seconds from the time when it is accepted by some user, the sync deadline appears, and activity is terminated, and "Timeout" activity is executed.
+"See log" activity is here to show you the log of process execution if using ShakAdmin, and "Print log" activity prints log on the console.</Description>
+            </ProcessHeader>
+            <RedefinableHeader>
+                <Author>Sasa Bojanic</Author>
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <DataFields>
+                <DataField Id="logmsg" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </DataField>
+            </DataFields>
+            <Activities>
+                <Activity Id="do_something" Name="Do something">
+                    <Description>If this activity is not finished 15 sec after it is accepted, it is terminated by the engine, and process goes to activity "Timeout"</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"do_something"</ActualParameter>
+                                <ActualParameter>"Executed before deadline"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <StartMode>
+                        <Manual/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <Deadline Execution="SYNCHR">
+                        <DeadlineCondition>var d=new java.util.Date();
+d.setTime(ACTIVITY_ACCEPTED_TIME.getTime()+15000);
+d;</DeadlineCondition>
+                        <ExceptionName>SYNC_EXCEPTION</ExceptionName>
+                    </Deadline>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="simple_sync_deadline_Tra3"/>
+                                    <TransitionRef Id="do_something_timeout"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="178"/>
+                        <ExtendedAttribute Name="YOffset" Value="56"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="timeout" Name="Timeout">
+                    <Description>This activity is executed if deadline time specified for activity "Do something" has expiried</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"timeout"</ActualParameter>
+                                <ActualParameter>"Executed because of deadline exception on activity with definition do_something"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="360"/>
+                        <ExtendedAttribute Name="YOffset" Value="137"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="do_something_else" Name="Do something else">
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"do_something_else"</ActualParameter>
+                                <ActualParameter>"Activity with definition do_something_else is executed after sucessfull execution of activity with definition do_something"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="354"/>
+                        <ExtendedAttribute Name="YOffset" Value="34"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="see_log" Name="See log">
+                    <Description>Enables log message to be seen in SharkAdmin application</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="567"/>
+                        <ExtendedAttribute Name="YOffset" Value="53"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="logmsg"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="print_log" Name="Print log">
+                    <Implementation>
+                        <Tool Id="printLog" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="567"/>
+                        <ExtendedAttribute Name="YOffset" Value="79"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="do_something" Id="do_something_timeout" Name="Transition" To="timeout">
+                    <Condition Type="EXCEPTION">SYNC_EXCEPTION</Condition>
+                    <Description>Happens when the deadline time for activity "do_something" has passed</Description>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something" Id="simple_sync_deadline_Tra3" Name="Transition" To="do_something_else">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something_else" Id="simple_sync_deadline_Tra6" Name="Transition" To="see_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="timeout" Id="simple_sync_deadline_Tra7" Name="Transition" To="see_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="see_log" Id="simple_sync_deadline_Tra14" Name="Transition" To="print_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="somerole;do_something;94;56;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;print_log;692;79;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="somerole;FreeTextExpressionParticipant;"/>
+                <ExtendedAttribute Name="DeadlineReevaluation"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="simple_async_and_sync_deadline" Name="Simple ASYNC and SYNC deadline">
+            <ProcessHeader>
+                <Created>2004-03-10 14:35:27</Created>
+                <Description>If activity "Do something" is not executed within 15 seconds from its activation (which in this case is similar to process start), the async deadline appears, and "Async timeout" activity is executed, but "Do something" activity is not terminated.
+If there has been passed 30 seconds after activity "Do something" is accepted by some user, the sync deadline exception happens, and activity "Do something" is terminated, and process goes to activity "Sync timeout".
+"See log" activity is here to show you the log of process execution if using ShakAdmin, and "Print log" activity prints log on the console.</Description>
+            </ProcessHeader>
+            <RedefinableHeader>
+                <Author>Sasa Bojanic</Author>
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <DataFields>
+                <DataField Id="logmsg" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </DataField>
+            </DataFields>
+            <Activities>
+                <Activity Id="do_something" Name="Do something">
+                    <Description>If this activity is not finished 15 sec after it is activated, the asynchronous deadline exception happens, and process goes to activity "Async timeout", but activity is still running. If it is not finished after 30 sec, it is terminated by the engine, and process goes to activity "Sync Timeout"</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"do_something"</ActualParameter>
+                                <ActualParameter>"Executed before deadline"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <StartMode>
+                        <Manual/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <Deadline Execution="ASYNCHR">
+                        <DeadlineCondition>var d=new java.util.Date();
+d.setTime(ACTIVITY_ACTIVATED_TIME.getTime()+15000);
+d;</DeadlineCondition>
+                        <ExceptionName>ASYNC_EXCEPTION</ExceptionName>
+                    </Deadline>
+                    <Deadline Execution="SYNCHR">
+                        <DeadlineCondition>var d=new java.util.Date();
+d.setTime(ACTIVITY_ACCEPTED_TIME.getTime()+30000);
+d;</DeadlineCondition>
+                        <ExceptionName>SYNC_EXCEPTION</ExceptionName>
+                    </Deadline>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="simple_sync_deadline_Tra3"/>
+                                    <TransitionRef Id="do_something_async_timeout"/>
+                                    <TransitionRef Id="do_something_sync_timeout"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="178"/>
+                        <ExtendedAttribute Name="YOffset" Value="56"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="sync_timeout" Name="Sync Timeout">
+                    <Description>This activity is executed if SYNC deadline time specified for activity "Do something" has expiried</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"sync_timeout"</ActualParameter>
+                                <ActualParameter>"Executed because of SYNC deadline exception on activity with definition do_something"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="359"/>
+                        <ExtendedAttribute Name="YOffset" Value="135"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="do_something_else" Name="Do something else">
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"do_something_else"</ActualParameter>
+                                <ActualParameter>"Activity with definition do_something_else is executed after sucessfull execution of activity with definition do_something"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="354"/>
+                        <ExtendedAttribute Name="YOffset" Value="34"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="see_log" Name="See log">
+                    <Description>Enables log message to be seen in SharkAdmin application</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="567"/>
+                        <ExtendedAttribute Name="YOffset" Value="53"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="logmsg"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="async_timeout" Name="Async Timeout">
+                    <Description>This activity is executed if ASYNC deadline time specified for activity "Do something" has expiried</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"async_timeout"</ActualParameter>
+                                <ActualParameter>"Executed because of ASYNC deadline exception on activity with definition do_something"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="355"/>
+                        <ExtendedAttribute Name="YOffset" Value="245"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="print_log" Name="Print log">
+                    <Implementation>
+                        <Tool Id="printLog" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="567"/>
+                        <ExtendedAttribute Name="YOffset" Value="79"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="do_something" Id="do_something_sync_timeout" Name="Transition" To="sync_timeout">
+                    <Condition Type="EXCEPTION">SYNC_EXCEPTION</Condition>
+                    <Description>Happens when SYNC deadline time for activity "do_something" has passed</Description>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something" Id="simple_sync_deadline_Tra3" Name="Transition" To="do_something_else">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something_else" Id="simple_sync_deadline_Tra6" Name="Transition" To="see_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="sync_timeout" Id="simple_sync_deadline_Tra7" Name="Transition" To="see_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something" Id="do_something_async_timeout" Name="Transition" To="async_timeout">
+                    <Condition Type="EXCEPTION">ASYNC_EXCEPTION</Condition>
+                    <Description>Happens when ASYNC deadline time for activity "do_something" has passed</Description>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="see_log" Id="simple_async_and_sync_deadline_Tra9" Name="Transition" To="print_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="somerole;do_something;94;56;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;print_log;684;79;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;async_timeout;540;245;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="somerole;FreeTextExpressionParticipant;"/>
+                <ExtendedAttribute Name="DeadlinePersisting"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="several_async_and_one_sync_deadline" Name="Several ASYNC and One SYNC Deadline">
+            <ProcessHeader>
+                <Created>2004-03-10 16:14:20</Created>
+                <Description>If activity "Do something" is not executed within 15 seconds from its activation (which in this case is similar to process start), the async deadline appears, and "Async timeout1" activity is executed, but "Do something" activity is not terminated.
+If activity "Do something" is not executed within 30 seconds from its activation (which in this case is similar to process start), the second async deadline appears, and "Async timeout2" activity is executed, but "Do something" activity is not terminated.
+If there has been passed 60 seconds after activity "Do something" is accepted by some user, the sync deadline exception happens, and activity "Do something" is terminated, and process goes to activity "Sync timeout".
+"See log" activity is here to show you the log of process execution if using ShakAdmin, and "Print log" activity prints log on the console..</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <DataFields>
+                <DataField Id="logmsg" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </DataField>
+            </DataFields>
+            <Activities>
+                <Activity Id="do_something" Name="Do something">
+                    <Description>If this activity is not finished 15 sec after it is activated, the asynchronous deadline exception happens, and process goes to activity "Async timeout1", but activity is still running.
+If this activity is not finished 30 sec after it is activated, another asynchronous deadline exception happens, and process goes to activity "Async timeout2", but activity is still running.
+If it is not finished after 60 sec after it is accepted, it is terminated by the engine, and process goes to activity "Sync Timeout"</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"do_something"</ActualParameter>
+                                <ActualParameter>"Executed before deadline"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <StartMode>
+                        <Manual/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <Deadline Execution="ASYNCHR">
+                        <DeadlineCondition>var d=new java.util.Date();
+d.setTime(ACTIVITY_ACTIVATED_TIME.getTime()+15000);
+d;</DeadlineCondition>
+                        <ExceptionName>ASYNC_EXCEPTION1</ExceptionName>
+                    </Deadline>
+                    <Deadline Execution="SYNCHR">
+                        <DeadlineCondition>var d=new java.util.Date();
+d.setTime(ACTIVITY_ACCEPTED_TIME.getTime()+60000);
+d;</DeadlineCondition>
+                        <ExceptionName>SYNC_EXCEPTION</ExceptionName>
+                    </Deadline>
+                    <Deadline Execution="ASYNCHR">
+                        <DeadlineCondition>var d=new java.util.Date();
+d.setTime(ACTIVITY_ACTIVATED_TIME.getTime()+30000);
+d;</DeadlineCondition>
+                        <ExceptionName>ASYNC_EXCEPTION2</ExceptionName>
+                    </Deadline>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="simple_sync_deadline_Tra3"/>
+                                    <TransitionRef Id="do_something_async_timeout1"/>
+                                    <TransitionRef Id="do_something_async_timeout2"/>
+                                    <TransitionRef Id="do_something_sync_timeout"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="178"/>
+                        <ExtendedAttribute Name="YOffset" Value="56"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="sync_timeout" Name="Sync Timeout">
+                    <Description>This activity is executed if SYNC deadline time specified for activity "Do something" has expiried</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"sync_timeout"</ActualParameter>
+                                <ActualParameter>"Executed because of SYNC deadline exception on activity with definition do_something"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="355"/>
+                        <ExtendedAttribute Name="YOffset" Value="101"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="do_something_else" Name="Do something else">
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"do_something_else"</ActualParameter>
+                                <ActualParameter>"Activity with definition do_something_else is executed after sucessfull execution of activity with definition do_something"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="354"/>
+                        <ExtendedAttribute Name="YOffset" Value="34"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="see_log" Name="See log">
+                    <Description>Enables log message to be seen in SharkAdmin application</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="567"/>
+                        <ExtendedAttribute Name="YOffset" Value="53"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="logmsg"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="async_timeout1" Name="Async Timeout1">
+                    <Description>This activity is executed if 1.ASYNC deadline time specified for activity "Do something" has expiried</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"async_timeout1"</ActualParameter>
+                                <ActualParameter>"Executed because of 1. ASYNC deadline exception on activity with definition do_something"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="358"/>
+                        <ExtendedAttribute Name="YOffset" Value="197"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="async_timeout2" Name="Async Timeout2">
+                    <Description>This activity is executed if 2. ASYNC deadline time specified for activity "Do something" has expiried</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"async_timeout2"</ActualParameter>
+                                <ActualParameter>"Executed because of 2. ASYNC deadline exception on activity with definition do_something"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="361"/>
+                        <ExtendedAttribute Name="YOffset" Value="312"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="print_log" Name="Print log">
+                    <Implementation>
+                        <Tool Id="printLog" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="567"/>
+                        <ExtendedAttribute Name="YOffset" Value="79"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="do_something" Id="do_something_sync_timeout" To="sync_timeout">
+                    <Condition Type="EXCEPTION">SYNC_EXCEPTION</Condition>
+                    <Description>Happens when SYNC deadline time for activity "do_something" has passed</Description>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something" Id="simple_sync_deadline_Tra3" To="do_something_else">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something_else" Id="DS2ToSL" To="see_log">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="sync_timeout" Id="STToSL" To="see_log">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something" Id="do_something_async_timeout1" To="async_timeout1">
+                    <Condition Type="EXCEPTION">ASYNC_EXCEPTION1</Condition>
+                    <Description>Happens when 1. ASYNC deadline time for activity "do_something" has passed</Description>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something" Id="do_something_async_timeout2" To="async_timeout2">
+                    <Condition Type="EXCEPTION">ASYNC_EXCEPTION2</Condition>
+                    <Description>Happens when 2. ASYNC deadline time for activity "do_something" has passed</Description>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="see_log" Id="several_async_and_one_sync_deadline_Tra11" Name="Transition" To="print_log">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="somerole;do_something;94;56;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;async_timeout1;525;197;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;print_log;686;79;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;async_timeout2;523;312;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="somerole;FreeTextExpressionParticipant;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="block_sync_deadline" Name="Block SYNC deadline">
+            <ProcessHeader>
+                <Created>2004-03-11 13:45:29</Created>
+                <Description>If the block of activities "Do something block" is not finished within 60 seconds from the time when it is activated (in this case the same as the process start), the sync deadline appears, and all activities in the block are terminated, and "Timeout" activity is executed.
+"See log" activity is here to show you the log of process execution if using ShakAdmin, and "Print log" activity prints log on the console.</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <DataFields>
+                <DataField Id="logmsg" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </DataField>
+            </DataFields>
+            <ActivitySets>
+                <ActivitySet Id="block_sync_deadline_Ase1">
+                    <Activities>
+                        <Activity Id="do_something1" Name="Do something1">
+                            <Implementation>
+                                <Tool Id="logger" Type="APPLICATION">
+                                    <ActualParameters>
+                                        <ActualParameter>"do_something1"</ActualParameter>
+                                        <ActualParameter>""</ActualParameter>
+                                        <ActualParameter>logmsg</ActualParameter>
+                                    </ActualParameters>
+                                </Tool>
+                            </Implementation>
+                            <Performer>somerole</Performer>
+                            <StartMode>
+                                <Manual/>
+                            </StartMode>
+                            <FinishMode>
+                                <Automatic/>
+                            </FinishMode>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                                <ExtendedAttribute Name="XOffset" Value="167"/>
+                                <ExtendedAttribute Name="YOffset" Value="54"/>
+                            </ExtendedAttributes>
+                        </Activity>
+                        <Activity Id="do_something2" Name="Do something2">
+                            <Implementation>
+                                <Tool Id="logger" Type="APPLICATION">
+                                    <ActualParameters>
+                                        <ActualParameter>"do_something2"</ActualParameter>
+                                        <ActualParameter>""</ActualParameter>
+                                        <ActualParameter>logmsg</ActualParameter>
+                                    </ActualParameters>
+                                </Tool>
+                            </Implementation>
+                            <Performer>somerole</Performer>
+                            <StartMode>
+                                <Manual/>
+                            </StartMode>
+                            <FinishMode>
+                                <Automatic/>
+                            </FinishMode>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                                <ExtendedAttribute Name="XOffset" Value="311"/>
+                                <ExtendedAttribute Name="YOffset" Value="54"/>
+                            </ExtendedAttributes>
+                        </Activity>
+                        <Activity Id="do_something3" Name="Do something3">
+                            <Implementation>
+                                <Tool Id="logger" Type="APPLICATION">
+                                    <ActualParameters>
+                                        <ActualParameter>"do_something3"</ActualParameter>
+                                        <ActualParameter>""</ActualParameter>
+                                        <ActualParameter>logmsg</ActualParameter>
+                                    </ActualParameters>
+                                </Tool>
+                            </Implementation>
+                            <Performer>somerole</Performer>
+                            <StartMode>
+                                <Manual/>
+                            </StartMode>
+                            <FinishMode>
+                                <Automatic/>
+                            </FinishMode>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                                <ExtendedAttribute Name="XOffset" Value="458"/>
+                                <ExtendedAttribute Name="YOffset" Value="54"/>
+                            </ExtendedAttributes>
+                        </Activity>
+                    </Activities>
+                    <Transitions>
+                        <Transition From="do_something1" Id="block_sync_deadline_Ase1_Tra10" To="do_something2">
+                            <Condition/>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                            </ExtendedAttributes>
+                        </Transition>
+                        <Transition From="do_something2" Id="block_sync_deadline_Ase1_Tra11" To="do_something3">
+                            <Condition/>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                            </ExtendedAttributes>
+                        </Transition>
+                    </Transitions>
+                </ActivitySet>
+            </ActivitySets>
+            <Activities>
+                <Activity Id="timeout" Name="Timeout">
+                    <Description>This activity is executed if deadline time specified for activity "Do something block" has expiried</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"timeout"</ActualParameter>
+                                <ActualParameter>"Executed because of deadline exception on activity with definition do_something_block"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="379"/>
+                        <ExtendedAttribute Name="YOffset" Value="62"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="see_log" Name="See log">
+                    <Description>Enables log message to be seen in SharkAdmin application</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="302"/>
+                        <ExtendedAttribute Name="YOffset" Value="59"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="logmsg"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="do_something_block" Name="Do something block">
+                    <Description>If block is not finished (all activities in the block are not finished) 1 min. after it is activated, it is terminated by the engine, and all activities in the block are terminated, and process goes to activity "Timeout"</Description>
+                    <BlockActivity BlockId="block_sync_deadline_Ase1"/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <Deadline Execution="SYNCHR">
+                        <DeadlineCondition>var d=new java.util.Date();
+d.setTime(ACTIVITY_ACTIVATED_TIME.getTime()+60000);
+d;</DeadlineCondition>
+                        <ExceptionName>SYNC_EXCEPTION</ExceptionName>
+                    </Deadline>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="block_sync_deadline_Tra2"/>
+                                    <TransitionRef Id="block_sync_deadline_Tra3"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="StartOfBlock" Value="somerole;do_something1;80;54;NOROUTING"/>
+                        <ExtendedAttribute Name="EndOfBlock" Value="somerole;do_something3;576;54;NOROUTING"/>
+                        <ExtendedAttribute Name="ParticipantVisualOrder" Value="somerole;"/>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="213"/>
+                        <ExtendedAttribute Name="YOffset" Value="62"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="print_log" Name="Print log">
+                    <Implementation>
+                        <Tool Id="printLog" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="544"/>
+                        <ExtendedAttribute Name="YOffset" Value="61"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="do_something_block" Id="block_sync_deadline_Tra2" Name="Transition" To="see_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something_block" Id="block_sync_deadline_Tra3" Name="Transition" To="timeout">
+                    <Condition Type="EXCEPTION">SYNC_EXCEPTION</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="timeout" Id="block_sync_deadline_Tra4" Name="Transition" To="see_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="see_log" Id="block_sync_deadline_Tra10" Name="Transition" To="print_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="FreeTextExpressionParticipant;do_something_block;100;62;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;print_log;669;61;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;somerole;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="subflow_sync_deadline" Name="Subflow SYNC deadline">
+            <ProcessHeader>
+                <Created>2004-03-11 14:11:54</Created>
+                <Description>If the subflow activity's "Do something subflow1" process is not finished within 1 min. from the time when it is activated (in this case the same as the process start), the sync deadline appears, subflow process is terminated, and "Timeout" activity is executed.
+If this subflow process finishes on the time (before 1 min has passed), second subflow activity "Do something subflow2" is started, and if it doesn't finish 2 minutes after its start (the time when the first subflow process finished), the sync deadline appears, subflow process is terminated, and "Timeout" activity is executed.
+"See log" activity is here to show you the log of process execution if using ShakAdmin, and "Print log" activity prints log on the console.</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <DataFields>
+                <DataField Id="logmsg" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </DataField>
+            </DataFields>
+            <Activities>
+                <Activity Id="do_something_subflow_1" Name="Do something subflow1">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="do_something">
+                            <ActualParameters>
+                                <ActualParameter>"do_something_subflow1"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <Deadline Execution="SYNCHR">
+                        <DeadlineCondition>var d=new java.util.Date();
+d.setTime(ACTIVITY_ACTIVATED_TIME.getTime()+60000);
+d;</DeadlineCondition>
+                        <ExceptionName>SYNC_EXCEPTION</ExceptionName>
+                    </Deadline>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="subflow_sync_deadline_Tra2"/>
+                                    <TransitionRef Id="subflow_sync_deadline_Tra5"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="241"/>
+                        <ExtendedAttribute Name="YOffset" Value="51"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="do_something_subflow2" Name="Do something subflow2">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="do_something">
+                            <ActualParameters>
+                                <ActualParameter>"do_something_subflow2"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <Deadline Execution="SYNCHR">
+                        <DeadlineCondition>var d=new java.util.Date();
+d.setTime(ACTIVITY_ACTIVATED_TIME.getTime()+120000);
+d;</DeadlineCondition>
+                        <ExceptionName>SYNC_EXCEPTION</ExceptionName>
+                    </Deadline>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="subflow_sync_deadline_Tra9"/>
+                                    <TransitionRef Id="subflow_sync_deadline_Tra6"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="483"/>
+                        <ExtendedAttribute Name="YOffset" Value="51"/>
+                        <ExtendedAttribute Name="DeadlinePersisting"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="timeout" Name="Timeout">
+                    <Description>This activity is executed if deadline time specified for activity "Do something subflow1" or "Do something subflow2" has expiried</Description>
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"timeout"</ActualParameter>
+                                <ActualParameter>"Executed because of deadline exception on one of the subflow activities"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="356"/>
+                        <ExtendedAttribute Name="YOffset" Value="132"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="see_log" Name="See log">
+                    <Description>Enables log message to be seen in SharkAdmin application</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="483"/>
+                        <ExtendedAttribute Name="YOffset" Value="56"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="logmsg"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="print_log" Name="Print log">
+                    <Implementation>
+                        <Tool Id="printLog" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="631"/>
+                        <ExtendedAttribute Name="YOffset" Value="51"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="do_something_subflow_1" Id="subflow_sync_deadline_Tra2" Name="Transition" To="do_something_subflow2">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something_subflow_1" Id="subflow_sync_deadline_Tra5" Name="Transition" To="timeout">
+                    <Condition Type="EXCEPTION">SYNC_EXCEPTION</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something_subflow2" Id="subflow_sync_deadline_Tra6" Name="Transition" To="timeout">
+                    <Condition Type="EXCEPTION">SYNC_EXCEPTION</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="timeout" Id="subflow_sync_deadline_Tra7" Name="Transition" To="see_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something_subflow2" Id="subflow_sync_deadline_Tra9" Name="Transition" To="see_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="see_log" Id="subflow_sync_deadline_Tra17" Name="Transition" To="print_log">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="FreeTextExpressionParticipant;do_something_subflow_1;104;51;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;print_log;744;51;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;somerole;"/>
+                <ExtendedAttribute Name="DeadlineReevaluation"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="do_something" Name="Do something">
+            <ProcessHeader>
+                <Created>2004-03-11 14:27:11</Created>
+                <Description>This process is the sequence of three activities with MANUAL start and AUTOMATIC end (AUTOMATIC part of activity just logs that this activity has been finished).
+It is used as a subprocess from the process "Subflow SYNC deadline".</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <FormalParameters>
+                <FormalParameter Id="callerActId" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="logmsg" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <Activities>
+                <Activity Id="do_something1" Name="Do something1">
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"do_something1"</ActualParameter>
+                                <ActualParameter>"Executed before subflow activity's "+callerActId+" deadline"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <StartMode>
+                        <Manual/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="176"/>
+                        <ExtendedAttribute Name="YOffset" Value="64"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="do_something2" Name="Do something2">
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"do_something2"</ActualParameter>
+                                <ActualParameter>"Executed before subflow activity's "+callerActId+" deadline"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <StartMode>
+                        <Manual/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="312"/>
+                        <ExtendedAttribute Name="YOffset" Value="64"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="do_something3" Name="Do something3">
+                    <Implementation>
+                        <Tool Id="logger" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"do_something3"</ActualParameter>
+                                <ActualParameter>"Executed before subflow activity's "+callerActId+" deadline"</ActualParameter>
+                                <ActualParameter>logmsg</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <StartMode>
+                        <Manual/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="447"/>
+                        <ExtendedAttribute Name="YOffset" Value="64"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="do_something1" Id="do_something_Tra10" To="do_something2">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="do_something2" Id="do_something_Tra11" To="do_something3">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="somerole;do_something1;90;64;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="somerole;do_something3;578;64;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="somerole;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+    </WorkflowProcesses>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.2"/>
+    </ExtendedAttributes>
+</Package>

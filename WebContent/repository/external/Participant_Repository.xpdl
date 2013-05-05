@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="Participant_Repository" Name="Participant Repository" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Together</Vendor>
+        <Created>13-03-2003</Created>
+        <Description>Participant repository for modified WfMC example of business process</Description>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="RELEASED"/>
+    <ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <Script Type="text/javascript"/>
+    <Participants>
+        <Participant Id="Participant_Repository_Par1" Name="France Baroque">
+            <ParticipantType Type="HUMAN"/>
+            <Description>President's secretary</Description>
+        </Participant>
+        <Participant Id="Participant_Repository_Par3" Name="Tim White">
+            <ParticipantType Type="HUMAN"/>
+            <Description>Mail Room Clerk</Description>
+        </Participant>
+        <Participant Id="Participant_Repository_Par4" Name="President's Secretary">
+            <ParticipantType Type="ROLE"/>
+            <Description>handles presidents mail</Description>
+        </Participant>
+        <Participant Id="Participant_Repository_Par5" Name="Mail-Room Clerk">
+            <ParticipantType Type="ROLE"/>
+            <Description>handles incoming mail</Description>
+        </Participant>
+        <Participant Id="Participant_Repository_Par6" Name="VP Sales">
+            <ParticipantType Type="ROLE"/>
+            <Description>Vice president; handles sales leads</Description>
+        </Participant>
+        <Participant Id="Participant_Repository_Par7" Name="Sales department">
+            <ParticipantType Type="ORGANIZATIONAL_UNIT"/>
+            <Description>is involved in handling sales orders</Description>
+        </Participant>
+        <Participant Id="Participant_Repository_Par8" Name="Manufacturing Department">
+            <ParticipantType Type="ORGANIZATIONAL_UNIT"/>
+            <Description>is involved in handling sales orders</Description>
+        </Participant>
+        <Participant Id="Participant_Repository_Par9" Name="Finance Department">
+            <ParticipantType Type="ORGANIZATIONAL_UNIT"/>
+            <Description>is involved in handling sales orders, invoices for payments and payments</Description>
+        </Participant>
+        <Participant Id="Participant_Repository_Par10" Name="Customer Support">
+            <ParticipantType Type="ORGANIZATIONAL_UNIT"/>
+            <Description>handles product inquiries</Description>
+        </Participant>
+        <Participant Id="Participant_Repository_Par11" Name="Sale manager">
+            <ParticipantType Type="ROLE"/>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="MySuperior" Value="Participant_Repository_Par7"/>
+            </ExtendedAttributes>
+        </Participant>
+        <Participant Id="Participant_Repository_Par12" Name="Production planner">
+            <ParticipantType Type="ROLE"/>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="MySuperior" Value="Participant_Repository_Par7"/>
+            </ExtendedAttributes>
+        </Participant>
+        <Participant Id="Participant_Repository_Par13" Name="Driver">
+            <ParticipantType Type="ROLE"/>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="MySuperior" Value="Participant_Repository_Par7"/>
+            </ExtendedAttributes>
+        </Participant>
+    </Participants>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.2"/>
+    </ExtendedAttributes>
+</Package>

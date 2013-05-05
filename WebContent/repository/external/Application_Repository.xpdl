@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="Application_Repository" Name="Application Repository" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Together</Vendor>
+        <Created>13-03-2003</Created>
+        <Description>Application repository for modified WfMC example of business process</Description>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="RELEASED"/>
+    <ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <Script Type="text/javascript"/>
+    <Applications>
+        <Application Id="Application_Repository_App1" Name="scan document">
+            <FormalParameters>
+                <FormalParameter Id="Application_Repository_App1_For1" Index="1" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="REFERENCE"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+        </Application>
+        <Application Id="Application_Repository_App2" Name="identify document">
+            <FormalParameters>
+                <FormalParameter Id="Application_Repository_App2_For1" Index="1" Mode="IN">
+                    <DataType>
+                        <BasicType Type="REFERENCE"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="Application_Repository_App2_For2" Index="2" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+        </Application>
+        <Application Id="Application_Repository_App3" Name="send document">
+            <FormalParameters>
+                <FormalParameter Id="Application_Repository_App3_For1" Index="1" Mode="IN">
+                    <DataType>
+                        <BasicType Type="REFERENCE"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="Application_Repository_App3_For2" Index="2" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+        </Application>
+        <Application Id="Application_Repository_App4" Name="calculator"/>
+    </Applications>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.2"/>
+    </ExtendedAttributes>
+</Package>

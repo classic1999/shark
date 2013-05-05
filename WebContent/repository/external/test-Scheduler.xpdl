@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="test_sched" Name="SchedulerToolAgent Tests" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>BDNACorp</Vendor>
+        <Created>2005-01-03 18:06:10</Created>
+        <Description>Simple tests of the SchedulerToolAgent functionality</Description>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="UNDER_TEST">
+        <Author>Abe Achkinazi, BDNACorp.com</Author>
+        <Version>0.1</Version>
+    </RedefinableHeader>
+    <ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <Script Type="text/java"/>
+    <Participants>
+        <Participant Id="test_sched_Par1" Name="System">
+            <ParticipantType Type="SYSTEM"/>
+            <Description>Participant executing applications and automated commands</Description>
+        </Participant>
+    </Participants>
+    <Applications>
+        <Application Id="test_sched_App1" Name="ScheduleNSecsWait">
+            <Description>Schedule NSecs Wait</Description>
+            <FormalParameters>
+                <FormalParameter Id="numOfSecs" Index="numOfSecs" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.SchedulerToolAgent"/>
+                <ExtendedAttribute Name="ToolAgentClassProxy" Value="org.enhydra.shark.toolagent.BshToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="Thread.sleep(numOfSecs.intValue()*1000L);"/>
+            </ExtendedAttributes>
+        </Application>
+        <Application Id="test_sched_App2" Name="ScheduledSetString">
+            <Description>Set a new string asynchrousnosly</Description>
+            <FormalParameters>
+                <FormalParameter Id="argIn" Index="argIn" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="argOut" Index="argOut" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.SchedulerToolAgent"/>
+                <ExtendedAttribute Name="ToolAgentClassProxy" Value="org.enhydra.shark.toolagent.BshToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="argOut=new String(argIn);"/>
+            </ExtendedAttributes>
+        </Application>
+    </Applications>
+    <WorkflowProcesses>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="test_sched_Wor3" Name="Scheduler ToolAgent Tests">
+            <ProcessHeader DurationUnit="D">
+                <Created>2005-01-19 12:39:08</Created>
+                <Description>Simple test of scheduler tool agent using BshToolAgent as a proxy</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Abe Achkinazi, BDNACorp.com</Author>
+                <Version>0.1</Version>
+            </RedefinableHeader>
+            <DataFields>
+                <DataField Id="outString" IsArray="FALSE" Name="outString">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <InitialValue>""</InitialValue>
+                    <Description>String set by ScheduleSetString</Description>
+                </DataField>
+                <DataField Id="outString2" IsArray="FALSE" Name="outString2">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </DataField>
+                <DataField Id="startTime" IsArray="FALSE" Name="startTime">
+                    <DataType>
+                        <BasicType Type="DATETIME"/>
+                    </DataType>
+                </DataField>
+                <DataField Id="endTime" IsArray="FALSE" Name="endTime">
+                    <DataType>
+                        <BasicType Type="DATETIME"/>
+                    </DataType>
+                </DataField>
+                <DataField Id="testDuration" IsArray="FALSE" Name="testDuration">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                </DataField>
+                <DataField Id="testResults" IsArray="FALSE" Name="testResults">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </DataField>
+            </DataFields>
+            <Participants>
+                <Participant Id="test_sched_Wor3_Par1" Name="Test User Role">
+                    <ParticipantType Type="ROLE"/>
+                </Participant>
+            </Participants>
+            <Applications>
+                <Application Id="test_sched_Wor3_App2" Name="currentTime">
+                    <Description>Captures current time</Description>
+                    <FormalParameters>
+                        <FormalParameter Id="dateOut" Index="dateOut" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="DATETIME"/>
+                            </DataType>
+                        </FormalParameter>
+                    </FormalParameters>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.BshToolAgent"/>
+                        <ExtendedAttribute Name="Script" Value="dateOut = new Date(System.currentTimeMillis());"/>
+                    </ExtendedAttributes>
+                </Application>
+                <Application Id="test_sched_Wor3_App3" Name="setThreadResult">
+                    <Description>Calculates duration and sets test results for parallel thread test.</Description>
+                    <FormalParameters>
+                        <FormalParameter Id="startDateArg" Index="startDateArg" Mode="IN">
+                            <DataType>
+                                <BasicType Type="DATETIME"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="endDateArg" Index="endDateArg" Mode="IN">
+                            <DataType>
+                                <BasicType Type="DATETIME"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="durationArg" Index="durationArg" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="INTEGER"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="resultStrArg" Index="resultStrArg" Mode="INOUT">
+                            <DataType>
+                                <BasicType Type="STRING"/>
+                            </DataType>
+                        </FormalParameter>
+                    </FormalParameters>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.BshToolAgent"/>
+                        <ExtendedAttribute Name="Script" Value="durationArg = new Integer((int)(endDateArg.getTime() - startDateArg.getTime())/1000);&#10;resultStrArg = ((null == resultStrArg) ? &quot;&quot; : resultStrArg) &#10;  + ((durationArg.intValue() &lt; 30) ? &quot;Thread test passed&quot; : &quot;Thread test failed&quot;);"/>
+                    </ExtendedAttributes>
+                </Application>
+            </Applications>
+            <Activities>
+                <Activity Id="test_sched_Wor3_Act1" Name="Schedule 5 &amp; 10 secs wait">
+                    <Description>Schedule to waits of 5 and 10 seconds. Scheduler must wait for the 10 second call to complete before calling WfActivity.complete()</Description>
+                    <Implementation>
+                        <Tool Id="test_sched_App1" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>5</ActualParameter>
+                            </ActualParameters>
+                            <Description>Schedule 5 seconds wait</Description>
+                        </Tool>
+                        <Tool Id="test_sched_App1" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>10</ActualParameter>
+                            </ActualParameters>
+                            <Description>Schedule 10 seconds wait</Description>
+                        </Tool>
+                    </Implementation>
+                    <Performer>test_sched_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Manual/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="190"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="test_sched_Wor3_Act2" Name="Schedule set string">
+                    <Description>Set the process data field outString in a separate thread.</Description>
+                    <Implementation>
+                        <Tool Id="test_sched_App2" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>"foobar"</ActualParameter>
+                                <ActualParameter>outString</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <Performer>test_sched_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Manual/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="310"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="test_sched_Wor3_Act3" Name="Checkout results">
+                    <Description>Give user a chance to examine test results.</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test_sched_Wor3_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Wor3_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="760"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="test_sched_Wor3_Act4" Name="Sched 10s Wait">
+                    <Implementation>
+                        <Tool Id="test_sched_App1" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>10</ActualParameter>
+                            </ActualParameters>
+                            <Description>Schedule 10 seconds wait</Description>
+                        </Tool>
+                    </Implementation>
+                    <Performer>test_sched_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Manual/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="530"/>
+                        <ExtendedAttribute Name="YOffset" Value="1"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="test_sched_Wor3_Act6" Name="Sched 10s Wait">
+                    <Implementation>
+                        <Tool Id="test_sched_App1" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>10</ActualParameter>
+                            </ActualParameters>
+                            <Description>Schedule 10 seconds wait</Description>
+                        </Tool>
+                    </Implementation>
+                    <Performer>test_sched_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Manual/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="530"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="test_sched_Wor3_Act7" Name="Capture EndTime">
+                    <Description>Capture time when five waits finish. It should take around 20 seconds since thread pool default is 3. Set test results based on endTime-startTime.</Description>
+                    <Implementation>
+                        <Tool Id="test_sched_Wor3_App2" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>endTime</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                        <Tool Id="test_sched_Wor3_App3" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>startTime</ActualParameter>
+                                <ActualParameter>endTime</ActualParameter>
+                                <ActualParameter>testDuration</ActualParameter>
+                                <ActualParameter>testResults</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <Performer>test_sched_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="AND"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="660"/>
+                        <ExtendedAttribute Name="YOffset" Value="110"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="test_sched_Wor3_Act8" Name="Get StartTime">
+                    <Description>Capture start time of parallel thread test. By default SchedulerToolAgent uses 3 threads to execute commands. The five waits should take roughly 20 seconds.</Description>
+                    <Implementation>
+                        <Tool Id="test_sched_Wor3_App2" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>startTime</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <Performer>test_sched_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="test_sched_Wor3_Tra25"/>
+                                    <TransitionRef Id="test_sched_Wor3_Tra29"/>
+                                    <TransitionRef Id="test_sched_Wor3_Tra27"/>
+                                    <TransitionRef Id="test_sched_Wor3_Tra26"/>
+                                    <TransitionRef Id="test_sched_Wor3_Tra28"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="400"/>
+                        <ExtendedAttribute Name="YOffset" Value="110"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="test_sched_Wor3_Act9" Name="Sched 10s Wait">
+                    <Implementation>
+                        <Tool Id="test_sched_App1" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>10</ActualParameter>
+                            </ActualParameters>
+                            <Description>Schedule 10 seconds wait</Description>
+                        </Tool>
+                    </Implementation>
+                    <Performer>test_sched_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Manual/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="530"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="test_sched_Wor3_Act10" Name="Sched 10s Wait">
+                    <Implementation>
+                        <Tool Id="test_sched_App1" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>10</ActualParameter>
+                            </ActualParameters>
+                            <Description>Schedule 10 seconds wait</Description>
+                        </Tool>
+                    </Implementation>
+                    <Performer>test_sched_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Manual/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="530"/>
+                        <ExtendedAttribute Name="YOffset" Value="150"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="test_sched_Wor3_Act11" Name="Sched 10s Wait">
+                    <Implementation>
+                        <Tool Id="test_sched_App1" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>10</ActualParameter>
+                            </ActualParameters>
+                            <Description>Schedule 10 seconds wait</Description>
+                        </Tool>
+                    </Implementation>
+                    <Performer>test_sched_Par1</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Manual/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test_sched_Par1"/>
+                        <ExtendedAttribute Name="XOffset" Value="530"/>
+                        <ExtendedAttribute Name="YOffset" Value="200"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="test_sched_Wor3_Act1" Id="test_sched_Wor3_Tra3" To="test_sched_Wor3_Act2">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act4" Id="test_sched_Wor3_Tra15" To="test_sched_Wor3_Act7">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act6" Id="test_sched_Wor3_Tra16" To="test_sched_Wor3_Act7">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act2" Id="test_sched_Wor3_Tra24" To="test_sched_Wor3_Act8">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act8" Id="test_sched_Wor3_Tra25" To="test_sched_Wor3_Act4">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act8" Id="test_sched_Wor3_Tra26" To="test_sched_Wor3_Act6">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act8" Id="test_sched_Wor3_Tra27" To="test_sched_Wor3_Act9">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act8" Id="test_sched_Wor3_Tra28" To="test_sched_Wor3_Act10">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act8" Id="test_sched_Wor3_Tra29" To="test_sched_Wor3_Act11">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act9" Id="test_sched_Wor3_Tra30" To="test_sched_Wor3_Act7">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act10" Id="test_sched_Wor3_Tra31" To="test_sched_Wor3_Act7">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act11" Id="test_sched_Wor3_Tra32" To="test_sched_Wor3_Act7">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="test_sched_Wor3_Act7" Id="test_sched_Wor3_Tra33" To="test_sched_Wor3_Act3">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test_sched_Par1;test_sched_Wor3_Act1;110;50;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test_sched_Wor3_Par1;test_sched_Wor3_Act3;870;50;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test_sched_Par1;test_sched_Wor3_Par1;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+    </WorkflowProcesses>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.4.1"/>
+    </ExtendedAttributes>
+</Package>

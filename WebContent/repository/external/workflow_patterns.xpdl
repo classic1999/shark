@@ -1,0 +1,1894 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="workflow_patterns" Name="Workflow patterns" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Together</Vendor>
+        <Created>2004-08-31 22:22:17</Created>
+        <Description>Contains workflow processes that show workflow patterns defined by Wil van der Aalst that are more or less directly supported by XPDL and Shark engine</Description>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="UNDER_TEST">
+        <Author>Sasa Bojanic</Author>
+    </RedefinableHeader>
+    <ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <Script Type="text/javascript"/>
+    <Participants>
+        <Participant Id="test" Name="Test">
+            <ParticipantType Type="ROLE"/>
+        </Participant>
+    </Participants>
+    <DataFields>
+        <DataField Id="whereToGo" IsArray="FALSE" Name="Where to go">
+            <DataType>
+                <BasicType Type="STRING"/>
+            </DataType>
+            <InitialValue>B</InitialValue>
+            <Description>The value of this variable determines the process flow.</Description>
+        </DataField>
+    </DataFields>
+    <WorkflowProcesses>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfBCP1_Sequence" Name="WfBCP1 Sequence">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-08-31 22:28:17</Created>
+                <Description>execute activities A, B and C in sequence</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="206"/>
+                        <ExtendedAttribute Name="YOffset" Value="48"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="356"/>
+                        <ExtendedAttribute Name="YOffset" Value="48"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="509"/>
+                        <ExtendedAttribute Name="YOffset" Value="48"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfBCP1_Sequence_Tra1" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="B" Id="WfBCP1_Sequence_Tra2" Name="Transition" To="C">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;80;90;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;C;650;90;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfBCP2_Parallel_Split" Name="WfBCP2 Parallel Split">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-08-31 22:34:21</Created>
+                <Description>executes activity A, and after that activities B and C in parallel</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfBCP2_Parallel_Split_Tra2"/>
+                                    <TransitionRef Id="WfBCP2_Parallel_Split_Tra1"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="180"/>
+                        <ExtendedAttribute Name="YOffset" Value="80"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="10"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="150"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfBCP2_Parallel_Split_Tra1" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfBCP2_Parallel_Split_Tra2" Name="Transition" To="C">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;80;30;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;B;530;40;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;C;530;200;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfBCP3_Synchronization" Name="WfBCP3 Synchronization">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-08-31 22:38:46</Created>
+                <Description>synchronize execution of two parallel activities</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfBCP3_Synchronization_Tra1"/>
+                                    <TransitionRef Id="WfBCP3_Synchronization_Tra2"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="150"/>
+                        <ExtendedAttribute Name="YOffset" Value="80"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="320"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="330"/>
+                        <ExtendedAttribute Name="YOffset" Value="160"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="D" Name="D">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="AND"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="480"/>
+                        <ExtendedAttribute Name="YOffset" Value="80"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfBCP3_Synchronization_Tra1" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfBCP3_Synchronization_Tra2" Name="Transition" To="C">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="B" Id="WfBCP3_Synchronization_Tra3" Name="Transition" To="D">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="C" Id="WfBCP3_Synchronization_Tra4" Name="Transition" To="D">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;63;13;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;D;609;19;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfBCP4_Exclusive_Choice" Name="WfBCP4 Exclusive Choice">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-08-31 22:38:47</Created>
+                <Description>choose one execution path from many alternatives</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to B process will folow to activity B, if you set it to C it will proceed to activity C, otherwise activity D will be executed</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfBCP4_Exclusive_Choice_Tra1"/>
+                                    <TransitionRef Id="WfBCP4_Exclusive_Choice_Tra2"/>
+                                    <TransitionRef Id="WfBCP4_Exclusive_Choice_Tra3"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="150"/>
+                        <ExtendedAttribute Name="YOffset" Value="110"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="320"/>
+                        <ExtendedAttribute Name="YOffset" Value="30"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="320"/>
+                        <ExtendedAttribute Name="YOffset" Value="110"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="D" Name="D">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="320"/>
+                        <ExtendedAttribute Name="YOffset" Value="190"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfBCP4_Exclusive_Choice_Tra1" Name="Transition" To="B">
+                    <Condition Type="CONDITION">whereToGo=="B"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfBCP4_Exclusive_Choice_Tra2" Name="Transition" To="C">
+                    <Condition Type="CONDITION">whereToGo=="C"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfBCP4_Exclusive_Choice_Tra3" Name="Transition" To="D">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;69;16;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;C;490;140;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;B;490;60;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;D;490;230;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfBCP5_Simple_Merge" Name="WfBCP5 Simple Merge">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-08-31 22:49:16</Created>
+                <Description>merge alternative execution paths</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to B process will folow to activity B, if you set it to C it will proceed to activity C, otherwise activity D will be executed</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfBCP5_Simple_Merge_Tra1"/>
+                                    <TransitionRef Id="WfBCP5_Simple_Merge_Tra2"/>
+                                    <TransitionRef Id="WfBCP5_Simple_Merge_Tra5"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="180"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="E" Name="E">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="500"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="D" Name="D">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="180"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfBCP5_Simple_Merge_Tra1" Name="Transition" To="B">
+                    <Condition Type="CONDITION">whereToGo=="B"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfBCP5_Simple_Merge_Tra2" Name="Transition" To="C">
+                    <Condition Type="CONDITION">whereToGo=="C"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="B" Id="WfBCP5_Simple_Merge_Tra3" Name="Transition" To="E">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="C" Id="WfBCP5_Simple_Merge_Tra4" Name="Transition" To="E">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfBCP5_Simple_Merge_Tra5" Name="Transition" To="D">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="D" Id="WfBCP5_Simple_Merge_Tra6" Name="Transition" To="E">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;75;23;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;E;617;28;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfABSP1_Multiple_Choice" Name="WfABSP1 Multiple Choice">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-08-31 22:55:37</Created>
+                <Description>choose several execution paths from many alternatives</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to B, C or D process will folow to activity B, C or D. If you set it to AB, BA, AC, CA, BC, CB, ABC, BCA, ... it will flow to all of the activities mentioned in the variable value</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfABSP1_Multiple_Choice_Tra1"/>
+                                    <TransitionRef Id="WfABSP1_Multiple_Choice_Tra2"/>
+                                    <TransitionRef Id="WfABSP1_Multiple_Choice_Tra8"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="160"/>
+                        <ExtendedAttribute Name="YOffset" Value="130"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="30"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="130"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="D" Name="D">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="240"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfABSP1_Multiple_Choice_Tra1" Name="Transition" To="B">
+                    <Condition Type="CONDITION">whereToGo=="B" || whereToGo=="BC" || whereToGo=="CB" || whereToGo=="BD" || whereToGo=="DB" || whereToGo=="BCD" || whereToGo=="BDC" || whereToGo=="CBD" || whereToGo=="CDB" || whereToGo=="DBC" || whereToGo=="DCB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfABSP1_Multiple_Choice_Tra2" Name="Transition" To="C">
+                    <Condition Type="CONDITION">whereToGo=="C" || whereToGo=="BC" || whereToGo=="CB" || whereToGo=="CD" || whereToGo=="DC" || whereToGo=="BCD" || whereToGo=="BDC" || whereToGo=="CBD" || whereToGo=="CDB" || whereToGo=="DBC" || whereToGo=="DCB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfABSP1_Multiple_Choice_Tra8" To="D">
+                    <Condition Type="CONDITION">whereToGo=="D" || whereToGo=="DB" || whereToGo=="BD" || whereToGo=="DC" || whereToGo=="CD" || whereToGo=="BCD" || whereToGo=="BDC" || whereToGo=="CBD" || whereToGo=="CDB" || whereToGo=="DBC" || whereToGo=="DCB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;80;60;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;C;520;160;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;D;520;280;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;B;520;50;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfABSP2_Synchronizing_Merge" Name="WfABSP2 Synchronizing Merge">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-08-31 23:05:16</Created>
+                <Description>merge many execution paths. Synchronize if many paths are taken. Simple merge if only one execution path is taken 
+
+WARNING: this process can't contain loops (at least, the branch with synchronizing merge structure mustn't be in a loop)</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to B process will folow to activity B, if you set it to C it will proceed to activity C, and if you set it to BC or CB, it will proceed both to B and C</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfABSP2_Synchronizing_Merge_Tra3"/>
+                                    <TransitionRef Id="WfABSP2_Synchronizing_Merge_Tra4"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="100"/>
+                        <ExtendedAttribute Name="YOffset" Value="160"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="30"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="200"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="R1" Name="R1">
+                    <Route/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfABSP2_Synchronizing_Merge_Tra5"/>
+                                    <TransitionRef Id="WfABSP2_Synchronizing_Merge_Tra7"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="210"/>
+                        <ExtendedAttribute Name="YOffset" Value="80"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="R2" Name="R2">
+                    <Route/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfABSP2_Synchronizing_Merge_Tra6"/>
+                                    <TransitionRef Id="WfABSP2_Synchronizing_Merge_Tra8"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="210"/>
+                        <ExtendedAttribute Name="YOffset" Value="240"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="R3" Name="R3">
+                    <Route/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="470"/>
+                        <ExtendedAttribute Name="YOffset" Value="80"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="R4" Name="R4">
+                    <Route/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="470"/>
+                        <ExtendedAttribute Name="YOffset" Value="240"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="D" Name="D">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="AND"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="590"/>
+                        <ExtendedAttribute Name="YOffset" Value="160"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfABSP2_Synchronizing_Merge_Tra3" Name="Transition" To="R1">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfABSP2_Synchronizing_Merge_Tra4" Name="Transition" To="R2">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="R1" Id="WfABSP2_Synchronizing_Merge_Tra5" Name="Transition" To="B">
+                    <Condition Type="CONDITION">whereToGo=="B" || whereToGo=="BC" || whereToGo=="CB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="R2" Id="WfABSP2_Synchronizing_Merge_Tra6" Name="Transition" To="C">
+                    <Condition Type="CONDITION">whereToGo=="C" || whereToGo=="BC" || whereToGo=="CB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="R1" Id="WfABSP2_Synchronizing_Merge_Tra7" Name="Transition" To="R3">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="R2" Id="WfABSP2_Synchronizing_Merge_Tra8" Name="Transition" To="R4">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="B" Id="WfABSP2_Synchronizing_Merge_Tra9" Name="Transition" To="R3">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="C" Id="WfABSP2_Synchronizing_Merge_Tra11" Name="Transition" To="R4">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="R3" Id="WfABSP2_Synchronizing_Merge_Tra13" Name="Transition" To="D">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="R4" Id="WfABSP2_Synchronizing_Merge_Tra14" Name="Transition" To="D">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;76;59;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;D;646;61;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfABSP3_Multiple_Merge" Name="WfABSP3 Multiple Merge">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-08-31 23:35:41</Created>
+                <Description>merge many execution paths without synchronizing</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to B, C or D process will folow to activity B, C or D. If you set it to AB, BA, AC, CA, BC, CB, ABC, BCA, ... it will flow to all of the activities mentioned in the variable value</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfABSP1_Multiple_Choice_Tra1"/>
+                                    <TransitionRef Id="WfABSP1_Multiple_Choice_Tra2"/>
+                                    <TransitionRef Id="WfABSP3_Multiple_Merge_Tra11"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="180"/>
+                        <ExtendedAttribute Name="YOffset" Value="120"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="350"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="350"/>
+                        <ExtendedAttribute Name="YOffset" Value="120"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="E" Name="E">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="510"/>
+                        <ExtendedAttribute Name="YOffset" Value="120"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="D" Name="D">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="350"/>
+                        <ExtendedAttribute Name="YOffset" Value="210"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfABSP1_Multiple_Choice_Tra1" Name="Transition" To="B">
+                    <Condition Type="CONDITION">whereToGo=="B" || whereToGo=="BC" || whereToGo=="CB" || whereToGo=="BD" || whereToGo=="DB" || whereToGo=="BCD" || whereToGo=="BDC" || whereToGo=="CBD" || whereToGo=="CDB" || whereToGo=="DBC" || whereToGo=="DCB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfABSP1_Multiple_Choice_Tra2" Name="Transition" To="C">
+                    <Condition Type="CONDITION">whereToGo=="C" || whereToGo=="BC" || whereToGo=="CB" || whereToGo=="CD" || whereToGo=="DC" || whereToGo=="BCD" || whereToGo=="BDC" || whereToGo=="CBD" || whereToGo=="CDB" || whereToGo=="DBC" || whereToGo=="DCB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="B" Id="WfABSP3_Multiple_Merge_Tra3" Name="Transition" To="E">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="C" Id="WfABSP3_Multiple_Merge_Tra4" Name="Transition" To="E">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfABSP3_Multiple_Merge_Tra11" To="D">
+                    <Condition Type="CONDITION">whereToGo=="D" || whereToGo=="DB" || whereToGo=="BD" || whereToGo=="DC" || whereToGo=="CD" || whereToGo=="BCD" || whereToGo=="BDC" || whereToGo=="CBD" || whereToGo=="CDB" || whereToGo=="DBC" || whereToGo=="DCB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="D" Id="WfABSP3_Multiple_Merge_Tra12" To="E">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;118;17;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;E;650;150;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfSP1_Arbitrary_Cycles" Name="WfSP1 Arbitrary Cycles">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-09-01 00:11:50</Created>
+                <Description>execute workflow graph w/out any structural restriction on loops</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="100"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="240"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to B process will loop to activity B and otherwise it'll go to activity D</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfSP1_Arbitrary_Cycles_Tra3"/>
+                                    <TransitionRef Id="WfSP1_Arbitrary_Cycles_Tra4"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="380"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="D" Name="D">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to C process will loop to activity C and otherwise it'll go to activity E</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfSP1_Arbitrary_Cycles_Tra5"/>
+                                    <TransitionRef Id="WfSP1_Arbitrary_Cycles_Tra6"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="520"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="E" Name="E">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="650"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfSP1_Arbitrary_Cycles_Tra1" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="B" Id="WfSP1_Arbitrary_Cycles_Tra2" Name="Transition" To="C">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="C" Id="WfSP1_Arbitrary_Cycles_Tra3" Name="Transition" To="B">
+                    <Condition Type="CONDITION">whereToGo=="B"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="360;130;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="C" Id="WfSP1_Arbitrary_Cycles_Tra4" Name="Transition" To="D">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="D" Id="WfSP1_Arbitrary_Cycles_Tra5" Name="Transition" To="C">
+                    <Condition Type="CONDITION">whereToGo=="C"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="490;130;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="D" Id="WfSP1_Arbitrary_Cycles_Tra6" Name="Transition" To="E">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;71;118;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;E;717;120;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfSP2_Implicit_Termination" Name="WfSP2 Implicit Termination">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-09-01 00:26:33</Created>
+                <Description>terminate if there is nothing to be done</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to B process will folow to activity B, if you set it to C it will proceed to activity C, otherwise process will be implicitly terminated, because there's nothing else to do</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfABSP1_Multiple_Choice_Tra1"/>
+                                    <TransitionRef Id="WfABSP1_Multiple_Choice_Tra2"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="170"/>
+                        <ExtendedAttribute Name="YOffset" Value="90"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to D process will folow to activity D, otherwise it will either finish or wait for activity C and possibly E to finish</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="C" Name="C">
+                    <Description>you have option to change the value of variable whereToGo. If you set it to E process will folow to activity E, otherwise it will either finish or wait for activity B and possibly D to finish</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="340"/>
+                        <ExtendedAttribute Name="YOffset" Value="150"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="D" Name="D">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="500"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="E" Name="E">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="500"/>
+                        <ExtendedAttribute Name="YOffset" Value="150"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfABSP1_Multiple_Choice_Tra1" Name="Transition" To="B">
+                    <Condition Type="CONDITION">whereToGo=="B" || whereToGo=="BC" || whereToGo=="CB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfABSP1_Multiple_Choice_Tra2" Name="Transition" To="C">
+                    <Condition Type="CONDITION">whereToGo=="C" || whereToGo=="BC" || whereToGo=="CB"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="B" Id="WfSP2_Implicit_Termination_Tra3" Name="Transition" To="D">
+                    <Condition Type="CONDITION">whereToGo=="D"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="C" Id="WfSP2_Implicit_Termination_Tra4" Name="Transition" To="E">
+                    <Condition Type="CONDITION">whereToGo=="E"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;80;40;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;D;610;60;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;E;610;170;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfPIMI1_MI_without_synchronization" Name="WfPIMI1 MI without synchronization">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-09-01 00:33:58</Created>
+                <Description>generate many instances of one activity without synchronizing them afterwards</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <DataFields>
+                <DataField Id="common" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <InitialValue>common data</InitialValue>
+                </DataField>
+                <DataField Id="sbflw1data" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <InitialValue>sbflw1 data</InitialValue>
+                </DataField>
+                <DataField Id="sbflw2data" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <InitialValue>sbflw2 data</InitialValue>
+                </DataField>
+                <DataField Id="sbflw3data" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <InitialValue>sbflw3 data</InitialValue>
+                </DataField>
+            </DataFields>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>you have option to change the value of some variables.</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfPIMI1_MI_without_synchronization_Tra1"/>
+                                    <TransitionRef Id="WfPIMI1_MI_without_synchronization_Tra3"/>
+                                    <TransitionRef Id="WfPIMI1_MI_without_synchronization_Tra2"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="200"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="common"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="sbflw1data"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="sbflw2data"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="sbflw3data"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="S1" Name="S1">
+                    <Implementation>
+                        <SubFlow Execution="ASYNCHR" Id="WfPIMI_Subflow">
+                            <ActualParameters>
+                                <ActualParameter>common</ActualParameter>
+                                <ActualParameter>sbflw1data</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="370"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="S2" Name="S2">
+                    <Implementation>
+                        <SubFlow Execution="ASYNCHR" Id="WfPIMI_Subflow">
+                            <ActualParameters>
+                                <ActualParameter>common</ActualParameter>
+                                <ActualParameter>sbflw2data</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="370"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="S3" Name="S3">
+                    <Implementation>
+                        <SubFlow Execution="ASYNCHR" Id="WfPIMI_Subflow">
+                            <ActualParameters>
+                                <ActualParameter>common</ActualParameter>
+                                <ActualParameter>sbflw3data</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="370"/>
+                        <ExtendedAttribute Name="YOffset" Value="180"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="AND"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="530"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfPIMI1_MI_without_synchronization_Tra1" Name="Transition" To="S1">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfPIMI1_MI_without_synchronization_Tra2" Name="Transition" To="S2">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfPIMI1_MI_without_synchronization_Tra3" Name="Transition" To="S3">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="S1" Id="WfPIMI1_MI_without_synchronization_Tra4" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="S2" Id="WfPIMI1_MI_without_synchronization_Tra5" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="S3" Id="WfPIMI1_MI_without_synchronization_Tra6" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;93;28;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;B;634;21;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="WfPIMI2_MI_with_a_priori_known_design_time_knowledge" Name="WfPIMI2 MI with a priori known design time knowledge">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-09-01 21:17:30</Created>
+                <Description>generate many instances of one activity when the number of instances is known at the design time (with synchronization)</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <DataFields>
+                <DataField Id="common" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <InitialValue>common data</InitialValue>
+                </DataField>
+                <DataField Id="sbflw1data" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <InitialValue>sbflw1 data</InitialValue>
+                </DataField>
+                <DataField Id="sbflw2data" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <InitialValue>sbflw2 data</InitialValue>
+                </DataField>
+                <DataField Id="sbflw3data" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                    <InitialValue>sbflw3 data</InitialValue>
+                </DataField>
+            </DataFields>
+            <Activities>
+                <Activity Id="A" Name="A">
+                    <Description>you have option to change the value of some variables.</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="AND">
+                                <TransitionRefs>
+                                    <TransitionRef Id="WfPIMI1_MI_without_synchronization_Tra1"/>
+                                    <TransitionRef Id="WfPIMI1_MI_without_synchronization_Tra3"/>
+                                    <TransitionRef Id="WfPIMI1_MI_without_synchronization_Tra2"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="200"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="common"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="sbflw1data"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="sbflw2data"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="sbflw3data"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="S1" Name="S1">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="WfPIMI_Subflow">
+                            <ActualParameters>
+                                <ActualParameter>common</ActualParameter>
+                                <ActualParameter>sbflw1data</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="370"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="S2" Name="S2">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="WfPIMI_Subflow">
+                            <ActualParameters>
+                                <ActualParameter>common</ActualParameter>
+                                <ActualParameter>sbflw2data</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="370"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="S3" Name="S3">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="WfPIMI_Subflow">
+                            <ActualParameters>
+                                <ActualParameter>common</ActualParameter>
+                                <ActualParameter>sbflw3data</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="370"/>
+                        <ExtendedAttribute Name="YOffset" Value="180"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="B" Name="B">
+                    <Description>Just press 'Complete' button</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="AND"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="530"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="A" Id="WfPIMI1_MI_without_synchronization_Tra1" Name="Transition" To="S1">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfPIMI1_MI_without_synchronization_Tra2" Name="Transition" To="S2">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="A" Id="WfPIMI1_MI_without_synchronization_Tra3" Name="Transition" To="S3">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="S1" Id="WfPIMI1_MI_without_synchronization_Tra4" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="S2" Id="WfPIMI1_MI_without_synchronization_Tra5" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="S3" Id="WfPIMI1_MI_without_synchronization_Tra6" Name="Transition" To="B">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;A;110;22;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;B;631;26;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PRIVATE" Id="WfPIMI_Subflow" Name="WfPIMI Subflow">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-09-01 21:09:50</Created>
+                <Description>not to be instantiated directly, but used only as a subflow process</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>Sasa Bojanic</Author>
+            </RedefinableHeader>
+            <FormalParameters>
+                <FormalParameter Id="P1" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="P2" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <Activities>
+                <Activity Id="sbflw_act" Name="Subflow activity">
+                    <Description>when completing activity A, you have option to see the values of the variables.</Description>
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>test</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="test"/>
+                        <ExtendedAttribute Name="XOffset" Value="290"/>
+                        <ExtendedAttribute Name="YOffset" Value="100"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="P1"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="P2"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="test;sbflw_act;169;51;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="test;sbflw_act;440;50;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="test;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+    </WorkflowProcesses>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.4.2"/>
+    </ExtendedAttributes>
+</Package>

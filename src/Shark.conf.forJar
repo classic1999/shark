@@ -1,0 +1,160 @@
+#-----------------------------------------------------------------------------
+# Basic shark configuration file
+#-----------------------------------------------------------------------------
+
+######################### NAME
+# the name of shark instance - if shark is used in several VMs, this property
+# MUST be different for each of them
+enginename=Shark
+
+#-----------------------------------------------------------------------------
+#                   Database Manager Configuration
+#-----------------------------------------------------------------------------
+# Here is a DB configuration for default DODS implementations of shark's
+# persistence interfaces.
+#
+
+# The databases that are used by CSAM.  Each of these databases
+# has configuration parameters set under DatabaseManager.DB."databaseName".
+#
+DatabaseManager.Databases[]="sharkdb"
+#
+# The default database used in this application.
+#
+DatabaseManager.DefaultDatabase="sharkdb"
+#
+# Turn on/off debugging for transactions or queries. Valid values
+# are "true" or "false".
+#
+DatabaseManager.Debug="false"
+
+#
+# The maximum number of connections that a connection
+# pool will hold.  If set to zero, then connections
+# are allocated indefinitly or until the database
+# refuses to allocate any new connections.
+#
+DatabaseManager.DB.sharkdb.Connection.MaxPoolSize=300
+
+#
+# Maximum amount of time that a thread will wait for
+# a connection from the connection pool before an
+# exception is thrown.  This will prevent possible dead
+# locks.  The time out is in milliseconds.  If the
+# time out is <= zero, the allocation of connections
+# will wait indefinitely.
+#
+DatabaseManager.DB.sharkdb.Connection.AllocationTimeout=10000
+
+#
+# Used to log database (SQL) activity.
+#
+DatabaseManager.DB.sharkdb.Connection.Logging=false
+
+#
+# The number of object identifiers that are allocated
+# as a group and held in memory.  These identifiers
+# are assigned to new data objects that are inserted
+# into the database.
+#
+DatabaseManager.DB.sharkdb.ObjectId.CacheSize=200
+DatabaseManager.DB.sharkdb.ObjectId.MinValue=1000000
+
+#
+# User wildcards
+#
+DatabaseManager.DB.User.userWildcard="*"
+DatabaseManager.DB.User.userSingleWildcard="_"
+DatabaseManager.DB.User.userSingleWildcardEscape="?"
+DatabaseManager.DB.User.userWildcardEscape="?"
+
+#
+# Default cache configuration
+#
+DatabaseManager.defaults.cache.maxCacheSize=100
+DatabaseManager.defaults.cache.maxSimpleCacheSize=50
+DatabaseManager.defaults.cache.maxComplexCacheSize=25
+DatabaseManager.defaults.cache.reserveFactor=0.1
+
+
+DatabaseManager.DB.sharkdb.ActivityStates.cache.maxCacheSize=-1
+DatabaseManager.DB.sharkdb.ActivityStates.cache.maxSimpleCacheSize=-1
+DatabaseManager.DB.sharkdb.ActivityStates.cache.maxComplexCacheSize=-1
+DatabaseManager.DB.sharkdb.ActivityStates.cache.initialCondition=*
+
+DatabaseManager.DB.sharkdb.ProcessStates.cache.maxCacheSize=-1
+DatabaseManager.DB.sharkdb.ProcessStates.cache.maxSimpleCacheSize=-1
+DatabaseManager.DB.sharkdb.ProcessStates.cache.maxComplexCacheSize=-1
+DatabaseManager.DB.sharkdb.ProcessStates.cache.initialCondition=*
+
+DatabaseManager.DB.sharkdb.ProcessStateEventAudits.cache.maxCacheSize=-1
+DatabaseManager.DB.sharkdb.ProcessStateEventAudits.cache.maxSimpleCacheSize=-1
+DatabaseManager.DB.sharkdb.ProcessStateEventAudits.cache.maxComplexCacheSize=-1
+DatabaseManager.DB.sharkdb.ProcessStateEventAudits.cache.initialCondition=*
+
+DatabaseManager.DB.sharkdb.ActivityStateEventAudits.cache.maxCacheSize=-1
+DatabaseManager.DB.sharkdb.ActivityStateEventAudits.cache.maxSimpleCacheSize=-1
+DatabaseManager.DB.sharkdb.ActivityStateEventAudits.cache.maxComplexCacheSize=-1
+DatabaseManager.DB.sharkdb.ActivityStateEventAudits.cache.initialCondition=*
+
+DatabaseManager.DB.sharkdb.EventTypes.cache.maxCacheSize=-1
+DatabaseManager.DB.sharkdb.EventTypes.cache.maxSimpleCacheSize=-1
+DatabaseManager.DB.sharkdb.EventTypes.cache.maxComplexCacheSize=-1
+DatabaseManager.DB.sharkdb.EventTypes.cache.initialCondition=*
+
+#
+# Default table configuration
+#
+#DatabaseManager.defaults.allReadOnly=true
+DatabaseManager.defaults.lazyLoading=false
+DatabaseManager.defaults.maxExecuteTime=200
+
+DatabaseManager.defaults.TransactionCaches=true
+DatabaseManager.defaults.DeleteCheckVersion=true
+DatabaseManager.defaults.TransactionCheck=true
+DatabaseManager.defaults.AutoSave=false
+DatabaseManager.defaults.AutoWrite=false
+DatabaseManager.defaults.CacheLockRetryCount=12
+DatabaseManager.defaults.CacheLockTimeout=120
+
+#-----------------------------------------------------------------------------
+# DODSLockMaster defaults
+#
+LockMasterClassName=org.enhydra.shark.processlocking.DODSLockMaster
+DODSLockMaster.Timeout=1200
+DODSLockMaster.LockWaitTime=400
+
+# The cache sizes must be set to zero
+DatabaseManager.DB.sharkdb.LockTable.cache.maxCacheSize=0
+DatabaseManager.DB.sharkdb.LockTable.cache.maxSimpleCacheSize=0
+DatabaseManager.DB.sharkdb.LockTable.cache.maxComplexCacheSize=0
+
+
+#=============================================================================
+# DODS instance persistent manager defaults
+#
+InstancePersistenceManagerClassName=org.enhydra.shark.instancepersistence.DODSPersistentManager
+
+#=============================================================================
+# Repository persistent manager defaults
+#
+RepositoryPersistenceManagerClassName=org.enhydra.shark.repositorypersistence.DODSRepositoryPersistenceManager
+
+#=============================================================================
+# Default Scripting manager is Standard
+#
+#-----------------------------------------------------------------------------
+#
+ScriptingManagerClassName=org.enhydra.shark.scripting.StandardScriptingManager
+
+#=============================================================================
+# Default Tool agent settings
+#
+ToolAgentFactoryClassName=org.enhydra.shark.toolagent.ToolAgentFactoryImpl
+DefaultToolAgent=org.enhydra.shark.toolagent.DefaultToolAgent
+
+#=============================================================================
+# DODSTransactionFactory defaults
+#
+TransactionManagerClassName=org.enhydra.shark.transaction.DODSTransactionFactory
+

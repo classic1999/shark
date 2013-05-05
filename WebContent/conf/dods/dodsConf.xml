@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dodsConf>
+
+<!-- =======================================================================================
+
+# DODS Builder config file.
+#
+ ======================================================================================== -->
+
+    <Database>
+        <Vendor name="Standard">StandardConf.xml</Vendor>
+        <Vendor name="InstantDB">InstantDBConf.xml</Vendor>
+        <Vendor name="Oracle">OracleConf.xml</Vendor>
+        <Vendor name="Informix">InformixConf.xml</Vendor>
+        <Vendor name="MSQL">MSQLConf.xml</Vendor>
+        <Vendor name="Sybase">SybaseConf.xml</Vendor>
+        <Vendor name="PostgreSQL">PostgreSQLConf.xml</Vendor>
+        <Vendor name="HypersonicSQL">HypersonicSQLConf.xml</Vendor>
+        <Vendor name="DB2">DB2Conf.xml</Vendor>
+        <Vendor name="QED">QEDConf.xml</Vendor>
+        <Vendor name="MySQL">MySQLConf.xml</Vendor>
+        <Vendor name="MckoiSQL">MckoiSQLConf.xml</Vendor>
+    </Database>
+
+	<Drivers>
+		 <DatabaseVendor name="Standard">
+		 	<Driver class="sun.jdbc.odbc.JdbcOdbcDriver"/>
+		 	<Driver class="interbase.interclient.Driver"/>
+		 	<Driver class="org.objectweb.cjdbc.driver.Driver" name="C-JDBC" fullName="C-JDBC Generic Driver"/>		 			 	
+		 </DatabaseVendor>
+ 		 <DatabaseVendor name="InstantDB">
+		 	<Driver class="org.enhydra.instantdb.jdbc.idbDriver" name="InstantDB" fullName="InstantDB JDBC Driver"/>		 
+		 </DatabaseVendor>
+		 <DatabaseVendor name="Oracle">
+		 	<Driver class="oracle.jdbc.driver.OracleDriver" name="Oracle" fullName="Oracle JDBC driver"/>
+		 	<Driver class="oracle.jdbc.OracleDriver" name="Oracle" fullName="Oracle JDBC driver"/>
+		 </DatabaseVendor>
+		 <DatabaseVendor name="Informix">
+		 	<Driver class="com.informix.jdbc.IfxDriver"/>
+		 </DatabaseVendor>
+		 <DatabaseVendor name="MSQL">
+		 	<Driver class="com.inet.tds.TdsDriver"/>
+		 	<Driver class="com.microsoft.jdbc.sqlserver.SQLServerDriver" name="SQLServer" fullName="SQLServer"/>		
+		 	<Driver class="com.newatlanta.jturbo.driver.Driver" name="JTurbo" fullName="JTurbo 3.0.2p10 JDBC 2.1 Driver for MS SQL Server"/>		 	 
+		 	<Driver class="net.sourceforge.jtds.jdbc.Driver"/>
+		 </DatabaseVendor>
+		 <DatabaseVendor name="Sybase">
+		 	<Driver class="com.sybase.jdbc2.jdbc.SybDriver"/>
+		 </DatabaseVendor>
+		 <DatabaseVendor name="PostgreSQL">
+		 	<Driver class="org.postgresql.Driver" name="PostgreSQL" fullName="PostgreSQL Native Driver"/>		 
+		 </DatabaseVendor>
+		 <DatabaseVendor name="HypersonicSQL">
+		 	<Driver class="org.hsqldb.jdbcDriver" name="HSQL" fullName="HSQL Database Engine Driver"/>		 
+		 </DatabaseVendor>
+		 <DatabaseVendor name="DB2">
+		 	<Driver class="COM.ibm.db2.jdbc.app.DB2Driver"/>
+		 	<Driver class="COM.ibm.db2.jdbc.net.DB2Driver" name="DB2" fullName="IBM DB2 JDBC 2.0 Type 3"/>
+		 </DatabaseVendor>
+		 <DatabaseVendor name="QED">
+		 	<Driver class="com.quadcap.jdbc.JdbcDriver" name="quadcap" fullName="com.quadcap.jdbc.JdbcDriver"/>		 
+		 </DatabaseVendor>
+		 <DatabaseVendor name="MySQL">
+		 	<Driver class="org.gjt.mm.mysql.Driver" name="MySQL" fullName="MySQL-AB JDBC Driver"/>		 
+		 	<Driver class="com.mysql.jdbc.Driver"/>
+		 </DatabaseVendor>
+		 <DatabaseVendor name="MckoiSQL">
+		 	<Driver class="com.mckoi.JDBCDriver" name="Mckoi" fullName="Mckoi JDBC Driver"/>		 
+		 </DatabaseVendor>
+	</Drivers>
+
+</dodsConf>

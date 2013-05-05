@@ -1,0 +1,16 @@
+<html>
+   <body>
+      <p>
+	 Cache component interface.
+      </p>
+      <p>
+	 Providing a high level of adaptability, Shark's kernel will relay on
+	 this component implementation for caching of runtime objects (currently the
+	 processes and resources), so that execution can be performed much faster.
+	 If this component isn't present, kernel will not perform any caching - it will
+	 always ask for data from DB.
+	 If shark is used from more then one VM on the same DB at the same time,
+	 it must be configured not to use any implementation of this component.
+      </p>
+   </body>
+</html>

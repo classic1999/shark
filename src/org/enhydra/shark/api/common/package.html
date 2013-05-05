@@ -1,0 +1,68 @@
+<html>
+   <body>
+      <p>
+	 Common Shark package.
+      </p>
+      <p>
+	 Contains interfaces and exceptions used in both client-side and
+	 internal interfaces.
+      </p>
+      <p>
+    Expirience has learned us that it's not that easy to build any
+    usefull expression to be used in xxIterators. Since Shark supports
+    BeanShell and JavaScript, making expressions starts to be even more
+    complicated once you start to use string literals. Also, reading
+    and debugging of such expression might turn into very tedious task.
+    On the other side OMG (or at least the way we read it) explicitely
+    says set_expression method takes String as parameter, and there's
+    no escape.
+      </p>
+      <p>
+    ExpressionBuilder and it's extending interfaces/classes serves the
+    intention to ease this task, although there is another benefit -
+    it allows us to prepare such expressions xxIterator can execute
+    directly against database, thus improving the performance.
+      </p>
+      <p>
+    The old style building (and setting) expressions for iterators diplayed
+    in the code snippet bellow, quite efficiently hides the actual expression.
+<pre class="programlisting">
+   ExecutionAdministration eAdmin=Shark.getInstance().getAdminInterface().getExecutionAdministration();
+   eAdmin.connect("user","secret","","");
+
+   WfProcessMgrIterator pmi=eAdmin.et_iterator_processmgr();
+   // - old style building expression
+   query="packageId.equals(\"test\") &amp;&amp; enabled.booleanValue()";
+   // - old style building expression
+   pmi.set_query_expression(query);
+   WfProcessMgr[] procs=pmi.get_next_n_sequence(0);
+</pre>
+      </p>
+      <p>
+    Our intention is to expose the main properties through ExpressionBuilders,
+    allowing the code to be easier to write, more importantly easier to read 
+    and maintain.
+<pre class="programlisting">
+   ExecutionAdministration eAdmin=Shark.getInstance().getAdminInterface().getExecutionAdministration();
+   eAdmin.connect("user","secret","","");
+
+   WfProcessMgrIterator pmi=eAdmin.et_iterator_processmgr();
+   // - new style building expression
+   ProcessMgrIteratorExpressionBuilder eb = Shark.getInstance()
+         .getExpressionBuilderManager()
+         .getProcessMgrIteratorExpressionBuilder();
+   eb.addPackageIdEquals("test")
+     .and()
+     .addIsEnabled()
+     .setOrderByName(ExpressionBuilder.ORDER_DESCENDING);
+   // - new style building expression
+   pmi.set_query_expression(eb.toExpression());
+   WfProcessMgr[] procs=pmi.get_next_n_sequence(0);
+</pre>
+   Additional benefit is that now Shark can internally optimize such queries
+   to be performed on DB server, instead of reading everything into memory,
+   than comparing each instance there. Therefore new feature appered -
+   ordering capability.
+      </p>
+   </body>
+</html>

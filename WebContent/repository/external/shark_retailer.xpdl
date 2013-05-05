@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="shark_retailer" Name="Retailer" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:iflow="http://www.i-flow.com" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Fujitsu Software Corporation</Vendor>
+        <Created>Thu Jan 20 00:14:08 PST 2005</Created>
+        <Description>Additional editing done to comply with Enhydra Shark (Feb 4 2005).</Description>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="UNDER_TEST"/>
+    <Script Type="text/javascript"/>
+    <WorkflowProcesses>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="retailer" Name="Retailer">
+            <ProcessHeader>
+                <Description>Shark Retailer process accepts a customer order and places it with one of 4 manufacturers based on value of order_number: 1 = Fujitsu, 2 = TIBCO, 3 = Enhydra Shark, 4 = EasyASAP (currently doesn't work). Once Manufacturer fulfills order, send confirmation to Customer.</Description>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Author>ibpm_server</Author>
+                <Version>2.0</Version>
+            </RedefinableHeader>
+            <FormalParameters>
+                <FormalParameter Id="address_city" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="address_first_line" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="address_second_line" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="address_zipcode" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="customer_first_name" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="customer_surname" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="est_delivery_date" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="DATETIME"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="in_stock" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="BOOLEAN"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="manufactured_by" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="manufacturer_code" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="manufacturer_receipt_date" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="DATETIME"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="order_date" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="DATETIME"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="order_number" Mode="IN">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="order_price" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="FLOAT"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="phone_number" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="price_per_unit" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="FLOAT"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="product_code" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="product_description" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="product_quantity" Mode="INOUT">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="retailer_name" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <DataFields>
+                <DataField Id="Seconds" IsArray="FALSE" Name="Seconds">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                    <InitialValue>30000</InitialValue>
+                </DataField>
+            </DataFields>
+            <Applications>
+                <Application Id="acquire" Name="acquire">
+                    <FormalParameters>
+                        <FormalParameter Id="productcode" Mode="IN">
+                            <DataType>
+                                <BasicType Type="INTEGER"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="productquantity" Mode="IN">
+                            <DataType>
+                                <BasicType Type="INTEGER"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="estdeliverydate" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="DATETIME"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="instock" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="BOOLEAN"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="manufacturedby" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="STRING"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="manufacturercode" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="INTEGER"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="manufacturerreceiptdate" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="DATETIME"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="ordernumber" Mode="IN">
+                            <DataType>
+                                <BasicType Type="INTEGER"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="retailername" Mode="INOUT">
+                            <DataType>
+                                <BasicType Type="STRING"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="orderprice" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="FLOAT"/>
+                            </DataType>
+                        </FormalParameter>
+                        <FormalParameter Id="priceperunit" Mode="OUT">
+                            <DataType>
+                                <BasicType Type="FLOAT"/>
+                            </DataType>
+                        </FormalParameter>
+                    </FormalParameters>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ToolAgentClassProxy" Value="org.enhydra.shark.toolagent.BshToolAgent"/>
+                        <ExtendedAttribute Name="Script" Value="/* acquire */&#10;  instock = 0 == (productcode % 2);&#10;  if (instock) {&#10;     manufacturedby = &quot;Enhydra Shark (retailer)&quot;;&#10;     manufacturercode = 1L;&#10;     manufacturerreceiptdate = new java.util.Date(java.lang.System.currentTimeMillis());&#10;     try { java.lang.Thread.sleep(60000);} catch (Throwable _) {}&#10;  }&#10;  priceperunit = new java.lang.Double(0.02);&#10;  orderprice = priceperunit *(1 + productquantity);&#10;  estdeliverydate = manufacturerreceiptdate;&#10;  retailername = retailername + &quot; enacted by Enhydra Shark.&quot;;&#10;  java.lang.System.err.println(&quot;productcode:&quot;+productcode);&#10;  java.lang.System.err.println(&quot;instock:&quot;+instock); &#10;/* end of acquire */"/>
+                        <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.SchedulerToolAgent"/>
+                    </ExtendedAttributes>
+                </Application>
+            </Applications>
+            <Activities>
+                <Activity Id="fujitsu_manufacturer" Name="Fujitsu manufacturer">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="http://interop.i-flow.com/ibpm/jsp/ProcDef.jsp?planName=Manufacturer">
+                            <ActualParameters>
+                                <ActualParameter>product_code</ActualParameter>
+                                <ActualParameter>product_quantity</ActualParameter>
+                                <ActualParameter>order_date</ActualParameter>
+                                <ActualParameter>order_number</ActualParameter>
+                                <ActualParameter>retailer_name</ActualParameter>
+                                <ActualParameter>manufactured_by</ActualParameter>
+                                <ActualParameter>manufacturer_receipt_date</ActualParameter>
+                                <ActualParameter>est_delivery_date</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="160"/>
+                        <ExtendedAttribute Name="YOffset" Value="130"/>
+                        <ExtendedAttribute Name="ParamMapping" Value="manufactured_by,manufacturer_name; est_delivery_date,availability_date;"/>
+                        <ExtendedAttribute Name="ForeignSchemaLocation" Value="http://interop.i-flow.com/ibpm/jsp/contextData.jsp?pdid=152"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="joining_flow" Name="Joining the flow">
+                    <Route/>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="330"/>
+                        <ExtendedAttribute Name="YOffset" Value="240"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="easy_asap_manufacturer" Name="Easy ASAP manufacturer">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="http://68.96.20.206:7788/asap_evm">
+                            <ActualParameters>
+                                <ActualParameter>product_code</ActualParameter>
+                                <ActualParameter>product_quantity</ActualParameter>
+                                <ActualParameter>order_date</ActualParameter>
+                                <ActualParameter>order_number</ActualParameter>
+                                <ActualParameter>retailer_name</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="370"/>
+                        <ExtendedAttribute Name="YOffset" Value="120"/>
+                        <ExtendedAttribute Name="ParamMapping" Value="manufactured_by,manufacturer_name; est_delivery_date,availability_date;"/>
+                        <ExtendedAttribute Name="ForeignSchemaLocation"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="tibco_manufacturer" Name="TIBCO manufacturer">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="http://bpm-interop.tibco.com:8080/ASAP/services/Factory?manufac">
+                            <ActualParameters>
+                                <ActualParameter>product_code</ActualParameter>
+                                <ActualParameter>product_quantity</ActualParameter>
+                                <ActualParameter>order_date</ActualParameter>
+                                <ActualParameter>order_number</ActualParameter>
+                                <ActualParameter>retailer_name</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="270"/>
+                        <ExtendedAttribute Name="YOffset" Value="130"/>
+                        <ExtendedAttribute Name="ParamMapping" Value="manufactured_by,manufacturer_name; est_delivery_date,availability_date;"/>
+                        <ExtendedAttribute Name="ForeignSchemaLocation" Value="http://bpm-interop.tibco.com:8080/ASAP/schemas/context/manufac.xsd"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="condition_checking" Name="Condition checking">
+                    <Route/>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="194"/>
+                                    <TransitionRef Id="215"/>
+                                    <TransitionRef Id="214"/>
+                                    <TransitionRef Id="232"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="330"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="exit" Name="EXIT">
+                    <Route/>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="560"/>
+                        <ExtendedAttribute Name="YOffset" Value="300"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="delay_node" Name="Delay node">
+                    <Implementation>
+                        <Tool Id="acquire" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>product_code</ActualParameter>
+                                <ActualParameter>product_quantity</ActualParameter>
+                                <ActualParameter>est_delivery_date</ActualParameter>
+                                <ActualParameter>in_stock</ActualParameter>
+                                <ActualParameter>manufactured_by</ActualParameter>
+                                <ActualParameter>manufacturer_code</ActualParameter>
+                                <ActualParameter>manufacturer_receipt_date</ActualParameter>
+                                <ActualParameter>order_number</ActualParameter>
+                                <ActualParameter>retailer_name</ActualParameter>
+                                <ActualParameter>order_price</ActualParameter>
+                                <ActualParameter>price_per_unit</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Manual/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="197"/>
+                                    <TransitionRef Id="200"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="70"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="shark_manufacturer" Name="Shark manufacturer">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="http://vajat.prozone.co.yu:8080/axis/services/wfxmlFactoryBinding?procDef=manufacturer&amp;packageId=shark_manufacturer">
+                            <ActualParameters>
+                                <ActualParameter>product_code</ActualParameter>
+                                <ActualParameter>product_quantity</ActualParameter>
+                                <ActualParameter>order_date</ActualParameter>
+                                <ActualParameter>order_number</ActualParameter>
+                                <ActualParameter>retailer_name</ActualParameter>
+                                <ActualParameter>manufactured_by</ActualParameter>
+                                <ActualParameter>manufacturer_receipt_date</ActualParameter>
+                                <ActualParameter>est_delivery_date</ActualParameter>
+                            </ActualParameters>
+                        </SubFlow>
+                    </Implementation>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="500"/>
+                        <ExtendedAttribute Name="YOffset" Value="130"/>
+                        <ExtendedAttribute Name="ParamMapping" Value="manufactured_by,manufacturer_name; est_delivery_date,availability_date;"/>
+                        <ExtendedAttribute Name="ForeignSchemaLocation"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="easy_asap_manufacturer" Id="219" Name="Done" To="joining_flow">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="tibco_manufacturer" Id="218" Name="Done" To="joining_flow">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="joining_flow" Id="216" Name="Done" To="exit">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="600;250;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="condition_checking" Id="215" Name="Staffware" To="tibco_manufacturer">
+                    <Condition Type="CONDITION">order_number == 2</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="condition_checking" Id="214" Name="EasyASAP" To="easy_asap_manufacturer">
+                    <Condition Type="CONDITION">order_number == 4</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="delay_node" Id="200" Name="InStock" To="exit">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="110;320;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="delay_node" Id="197" Name="NotInStock" To="condition_checking">
+                    <Condition Type="CONDITION">in_stock == false</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="fujitsu_manufacturer" Id="195" Name="Done" To="joining_flow">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="condition_checking" Id="194" Name="Fujitsu" To="fujitsu_manufacturer">
+                    <Condition Type="CONDITION">order_number == 1</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="shark_manufacturer" Id="231" Name="Done" To="joining_flow">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="condition_checking" Id="232" Name="Shark" To="shark_manufacturer">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+    </WorkflowProcesses>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.4.2"/>
+    </ExtendedAttributes>
+</Package>

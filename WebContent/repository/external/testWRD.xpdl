@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="testWRD" Name="test WRD" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Together</Vendor>
+        <Created>30-Oct-2002</Created>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="RELEASED">
+        <Author>Sasa Bojanic</Author>
+        <Version>1.0</Version>
+        <Countrykey>YU</Countrykey>
+    </RedefinableHeader>
+    <ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <Script Type="text/javascript"/>
+    <Participants>
+        <Participant Id="somerole" Name="somerole">
+            <ParticipantType Type="ROLE"/>
+        </Participant>
+    </Participants>
+    <Applications>
+        <Application Id="addParticipant">
+            <FormalParameters>
+                <FormalParameter Id="participantGroup" Mode="INOUT">
+                    <DataType>
+                        <ExternalReference location="org.enhydra.shark.wrd.Participants"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="participantId" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.JavaScriptToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="participantGroup.addParticipant(participantId);"/>
+            </ExtendedAttributes>
+        </Application>
+        <Application Id="getParticipantScore">
+            <FormalParameters>
+                <FormalParameter Id="participant" Mode="IN">
+                    <DataType>
+                        <ExternalReference location="org.enhydra.shark.wrd.Participant"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="score" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="INTEGER"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.JavaScriptToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="score=participant.getScore();"/>
+            </ExtendedAttributes>
+        </Application>
+        <Application Id="getBestParticipant">
+            <FormalParameters>
+                <FormalParameter Id="participantGroup" Mode="IN">
+                    <DataType>
+                        <ExternalReference location="org.enhydra.shark.wrd.Participants"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="bestParticipant" Mode="OUT">
+                    <DataType>
+                        <ExternalReference location="org.enhydra.shark.wrd.Participant"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="participantId" Mode="OUT">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.JavaScriptToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="bestParticipant=participantGroup.theBestScoreParticipant();&#10;participantId=bestParticipant.getId();"/>
+            </ExtendedAttributes>
+        </Application>
+        <Application Id="updateCounter">
+            <FormalParameters>
+                <FormalParameter Id="counter" Mode="INOUT">
+                    <DataType>
+                        <ExternalReference location="org.enhydra.shark.wrd.Counter"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.JavaScriptToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="counter.increment();"/>
+            </ExtendedAttributes>
+        </Application>
+        <Application Id="incrementParticipantScore">
+            <FormalParameters>
+                <FormalParameter Id="participantId" Mode="IN">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </FormalParameter>
+                <FormalParameter Id="participantGroup" Mode="INOUT">
+                    <DataType>
+                        <ExternalReference location="org.enhydra.shark.wrd.Participants"/>
+                    </DataType>
+                </FormalParameter>
+            </FormalParameters>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.JavaScriptToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="participant=participantGroup.get(participantId);&#10;participant.incrementScore();"/>
+            </ExtendedAttributes>
+        </Application>
+    </Applications>
+    <DataFields>
+        <DataField Id="participants" IsArray="FALSE">
+            <DataType>
+                <ExternalReference location="org.enhydra.shark.wrd.Participants"/>
+            </DataType>
+        </DataField>
+        <DataField Id="participant" IsArray="FALSE">
+            <DataType>
+                <ExternalReference location="org.enhydra.shark.wrd.Participant"/>
+            </DataType>
+            <InitialValue>null</InitialValue>
+        </DataField>
+        <DataField Id="participantId" IsArray="FALSE">
+            <DataType>
+                <BasicType Type="STRING"/>
+            </DataType>
+        </DataField>
+        <DataField Id="score" IsArray="FALSE">
+            <DataType>
+                <BasicType Type="INTEGER"/>
+            </DataType>
+        </DataField>
+        <DataField Id="counter" IsArray="FALSE">
+            <DataType>
+                <ExternalReference location="org.enhydra.shark.wrd.Counter"/>
+            </DataType>
+        </DataField>
+    </DataFields>
+    <WorkflowProcesses>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="ComplexWRDs" Name="Complex WRDs">
+            <ProcessHeader DurationUnit="D">
+                <Created>2003-12-12 16:15:43</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="RELEASED">
+                <Author>Sasa Bojanic</Author>
+                <Version>1.0</Version>
+                <Countrykey>YU</Countrykey>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="add_participant" Name="Add participant">
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="281"/>
+                        <ExtendedAttribute Name="YOffset" Value="63"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="participantId"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="add_participant_tool" Name="APT">
+                    <Implementation>
+                        <Tool Id="addParticipant" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>participants</ActualParameter>
+                                <ActualParameter>participantId</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="ComplexWRDs_Tra5"/>
+                                    <TransitionRef Id="ComplexWRDs_Tra24"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="280"/>
+                        <ExtendedAttribute Name="YOffset" Value="53"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="ComplexWRDs_Act3" Name="Route">
+                    <Route/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="162"/>
+                        <ExtendedAttribute Name="YOffset" Value="63"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="add_score" Name="Add score">
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Join Type="XOR"/>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="437"/>
+                        <ExtendedAttribute Name="YOffset" Value="63"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="participantId"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="add_score_tool" Name="AST">
+                    <Implementation>
+                        <Tool Id="incrementParticipantScore" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>participantId</ActualParameter>
+                                <ActualParameter>participants</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                        <Tool Id="updateCounter" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>counter</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="ComplexWRDs_Tra9"/>
+                                    <TransitionRef Id="ComplexWRDs_Tra25"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="427"/>
+                        <ExtendedAttribute Name="YOffset" Value="45"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="best_participant_tool" Name="BPT">
+                    <Implementation>
+                        <Tool Id="getBestParticipant" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>participants</ActualParameter>
+                                <ActualParameter>participant</ActualParameter>
+                                <ActualParameter>participantId</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="569"/>
+                        <ExtendedAttribute Name="YOffset" Value="54"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="best_participant_score" Name="BPS">
+                    <Implementation>
+                        <Tool Id="getParticipantScore" Type="APPLICATION">
+                            <ActualParameters>
+                                <ActualParameter>participant</ActualParameter>
+                                <ActualParameter>score</ActualParameter>
+                            </ActualParameters>
+                        </Tool>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="701"/>
+                        <ExtendedAttribute Name="YOffset" Value="54"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="view_best" Name="View the best">
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <Performer>somerole</Performer>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="somerole"/>
+                        <ExtendedAttribute Name="XOffset" Value="701"/>
+                        <ExtendedAttribute Name="YOffset" Value="72"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="participantId"/>
+                        <ExtendedAttribute Name="VariableToProcess_VIEW" Value="score"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="add_participant" Id="ComplexWRDs_Tra2" Name="Transition" To="add_participant_tool">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="ComplexWRDs_Act3" Id="ComplexWRDs_Tra4" Name="Transition" To="add_participant">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="add_participant_tool" Id="ComplexWRDs_Tra5" Name="Transition" To="add_participant">
+                    <Condition Type="CONDITION">participants.size()&lt;2;</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="282;139;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="add_score" Id="ComplexWRDs_Tra7" Name="Transition" To="add_score_tool">
+                    <Condition/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="add_score_tool" Id="ComplexWRDs_Tra9" Name="Transition" To="add_score">
+                    <Condition Type="CONDITION">counter.value()&lt;3;</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                        <ExtendedAttribute Name="BreakPoint" Value="443;151;1"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="best_participant_tool" Id="ComplexWRDs_Tra11" Name="Transition" To="best_participant_score">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="best_participant_score" Id="ComplexWRDs_Tra12" Name="Transition" To="view_best">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="add_participant_tool" Id="ComplexWRDs_Tra24" Name="Transition" To="add_score">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="add_score_tool" Id="ComplexWRDs_Tra25" Name="Transition" To="best_participant_tool">
+                    <Condition Type="OTHERWISE"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="somerole;ComplexWRDs_Act3;72;63;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="somerole;view_best;873;72;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="somerole;FreeTextExpressionParticipant;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+    </WorkflowProcesses>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.2"/>
+    </ExtendedAttributes>
+</Package>

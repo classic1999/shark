@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="exception_transitions" Name="Exception Transitions" xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+    <PackageHeader>
+        <XPDLVersion>1.0</XPDLVersion>
+        <Vendor>Together</Vendor>
+        <Created>2004-05-24 11:16:03</Created>
+    </PackageHeader>
+    <RedefinableHeader PublicationStatus="UNDER_TEST"/>
+    <ConformanceClass GraphConformance="NON_BLOCKED"/>
+    <Script Type="text/javascript"/>
+    <Applications>
+        <Application Id="throwException">
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="ToolAgentClass" Value="org.enhydra.shark.toolagent.JavaScriptToolAgent"/>
+                <ExtendedAttribute Name="Script" Value="throw new java.lang.RuntimeException();&#10;//java.lang.System.out.println(&quot;DEBUG INFO&quot;);"/>
+            </ExtendedAttributes>
+        </Application>
+    </Applications>
+    <WorkflowProcesses>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="normal_exceptions" Name="Normal exceptions">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-05-24 11:19:04</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <DataFields>
+                <DataField Id="whereToGo" IsArray="FALSE">
+                    <DataType>
+                        <BasicType Type="STRING"/>
+                    </DataType>
+                </DataField>
+            </DataFields>
+            <Activities>
+                <Activity Id="choice" Name="Choice">
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <TransitionRestrictions>
+                        <TransitionRestriction>
+                            <Split Type="XOR">
+                                <TransitionRefs>
+                                    <TransitionRef Id="normal_exceptions_Tra1"/>
+                                    <TransitionRef Id="normal_exceptions_Tra2"/>
+                                    <TransitionRef Id="normal_exceptions_Tra3"/>
+                                </TransitionRefs>
+                            </Split>
+                        </TransitionRestriction>
+                    </TransitionRestrictions>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="158"/>
+                        <ExtendedAttribute Name="YOffset" Value="148"/>
+                        <ExtendedAttribute Name="VariableToProcess_UPDATE" Value="whereToGo"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="nhe_throws_exception" Name="NHE throws exception">
+                    <Implementation>
+                        <Tool Id="throwException" Type="APPLICATION"/>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="327"/>
+                        <ExtendedAttribute Name="YOffset" Value="20"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="def_handle_exception" Name="Def handle exception">
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="475"/>
+                        <ExtendedAttribute Name="YOffset" Value="282"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="dhe_throws_exception" Name="DHE throws exception">
+                    <Implementation>
+                        <Tool Id="throwException" Type="APPLICATION"/>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="325"/>
+                        <ExtendedAttribute Name="YOffset" Value="282"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="handle_exception" Name="Handle exception">
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="471"/>
+                        <ExtendedAttribute Name="YOffset" Value="148"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="he_throws_exception" Name="HE throws exception">
+                    <Implementation>
+                        <Tool Id="throwException" Type="APPLICATION"/>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="324"/>
+                        <ExtendedAttribute Name="YOffset" Value="148"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="choice" Id="normal_exceptions_Tra1" Name="Transition" To="nhe_throws_exception">
+                    <Condition Type="CONDITION">whereToGo=="NHE"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="choice" Id="normal_exceptions_Tra2" Name="Transition" To="dhe_throws_exception">
+                    <Condition Type="CONDITION">whereToGo=="DHE"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="choice" Id="normal_exceptions_Tra3" Name="Transition" To="he_throws_exception">
+                    <Condition Type="CONDITION">whereToGo=="HE"</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="he_throws_exception" Id="normal_exceptions_Tra5" Name="Transition" To="handle_exception">
+                    <Condition Type="EXCEPTION"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="dhe_throws_exception" Id="normal_exceptions_Tra7" Name="Transition" To="def_handle_exception">
+                    <Condition Type="DEFAULTEXCEPTION"/>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="FreeTextExpressionParticipant;choice;58;148;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;he_throws_exception;420;90;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;def_handle_exception;591;282;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;dhe_throws_exception;420;210;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;nhe_throws_exception;512;20;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;handle_exception;589;148;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="block_exceptions" Name="Block exceptions">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-05-24 11:19:48</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <ActivitySets>
+                <ActivitySet Id="block_exceptions_Ase-1">
+                    <Activities>
+                        <Activity Id="Hblock_throws_exception" Name="HBlock throws exception">
+                            <Implementation>
+                                <Tool Id="throwException" Type="APPLICATION"/>
+                            </Implementation>
+                            <StartMode>
+                                <Automatic/>
+                            </StartMode>
+                            <FinishMode>
+                                <Automatic/>
+                            </FinishMode>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                                <ExtendedAttribute Name="XOffset" Value="230"/>
+                                <ExtendedAttribute Name="YOffset" Value="40"/>
+                            </ExtendedAttributes>
+                        </Activity>
+                        <Activity Id="hblock_react_upon_exception" Name="HBlock react upon exception">
+                            <Implementation>
+                                <No/>
+                            </Implementation>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                                <ExtendedAttribute Name="XOffset" Value="230"/>
+                                <ExtendedAttribute Name="YOffset" Value="140"/>
+                            </ExtendedAttributes>
+                        </Activity>
+                    </Activities>
+                    <Transitions>
+                        <Transition From="Hblock_throws_exception" Id="block_exceptions_Ase-1_Tra2" Name="Transition" To="hblock_react_upon_exception">
+                            <Condition Type="EXCEPTION">org.mozilla.javascript.JavaScriptException</Condition>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                            </ExtendedAttributes>
+                        </Transition>
+                    </Transitions>
+                </ActivitySet>
+                <ActivitySet Id="block_exceptions_Ase0">
+                    <Activities>
+                        <Activity Id="nhblock_throws_exception" Name="NHblock throws exception">
+                            <Implementation>
+                                <Tool Id="throwException" Type="APPLICATION"/>
+                            </Implementation>
+                            <StartMode>
+                                <Automatic/>
+                            </StartMode>
+                            <FinishMode>
+                                <Automatic/>
+                            </FinishMode>
+                            <ExtendedAttributes>
+                                <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                                <ExtendedAttribute Name="XOffset" Value="196"/>
+                                <ExtendedAttribute Name="YOffset" Value="52"/>
+                            </ExtendedAttributes>
+                        </Activity>
+                    </Activities>
+                </ActivitySet>
+            </ActivitySets>
+            <Activities>
+                <Activity Id="block_handles_exception" Name="Block handles exception">
+                    <BlockActivity BlockId="block_exceptions_Ase-1"/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="StartOfBlock" Value="FreeTextExpressionParticipant;Hblock_throws_exception;90;40;NOROUTING"/>
+                        <ExtendedAttribute Name="EndOfBlock" Value="FreeTextExpressionParticipant;Hblock_throws_exception;390;40;NOROUTING"/>
+                        <ExtendedAttribute Name="EndOfBlock" Value="FreeTextExpressionParticipant;hblock_react_upon_exception;390;140;NOROUTING"/>
+                        <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;"/>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="187"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="block_does_not_handle_exception" Name="Block does not handle exception">
+                    <BlockActivity BlockId="block_exceptions_Ase0"/>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="StartOfBlock" Value="FreeTextExpressionParticipant;nhblock_throws_exception;82;52;NOROUTING"/>
+                        <ExtendedAttribute Name="EndOfBlock" Value="FreeTextExpressionParticipant;nhblock_throws_exception;338;52;NOROUTING"/>
+                        <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;"/>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="350"/>
+                        <ExtendedAttribute Name="YOffset" Value="50"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="react_upon_block_exception" Name="React upon block exception">
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="350"/>
+                        <ExtendedAttribute Name="YOffset" Value="160"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="block_handles_exception" Id="block_exceptions_Tra2" Name="Transition" To="block_does_not_handle_exception">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="block_does_not_handle_exception" Id="block_exceptions_Tra3" Name="Transition" To="react_upon_block_exception">
+                    <Condition Type="EXCEPTION">org.mozilla.javascript.JavaScriptException</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="FreeTextExpressionParticipant;block_handles_exception;80;50;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;block_does_not_handle_exception;500;50;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;react_upon_block_exception;500;160;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PUBLIC" Id="subflow_exceptions" Name="Subflow exceptions">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-05-24 11:20:38</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="subflow_handle_exception" Name="Subflow handle exception">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="subflow_handles_exception"/>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="203"/>
+                        <ExtendedAttribute Name="YOffset" Value="49"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="subflow_does_not_handle_exception" Name="Subflow does not handle exception">
+                    <Implementation>
+                        <SubFlow Execution="SYNCHR" Id="subflow_does_not_handle_exception"/>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="383"/>
+                        <ExtendedAttribute Name="YOffset" Value="49"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="react_upon_subflow_exception" Name="React upon subflow exception">
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="383"/>
+                        <ExtendedAttribute Name="YOffset" Value="163"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="subflow_handle_exception" Id="subflow_exceptions_Tra2" Name="Transition" To="subflow_does_not_handle_exception">
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+                <Transition From="subflow_does_not_handle_exception" Id="subflow_exceptions_Tra3" Name="Transition" To="react_upon_subflow_exception">
+                    <Condition Type="EXCEPTION">org.mozilla.javascript.JavaScriptException</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="FreeTextExpressionParticipant;subflow_handle_exception;87;49;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;subflow_does_not_handle_exception;540;50;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;react_upon_subflow_exception;543;163;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PRIVATE" Id="subflow_handles_exception" Name="Subflow handles exception">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-05-24 11:21:29</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="hsubflow_throws_exception" Name="HSubflow throws exception">
+                    <Implementation>
+                        <Tool Id="throwException" Type="APPLICATION"/>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="230"/>
+                        <ExtendedAttribute Name="YOffset" Value="60"/>
+                    </ExtendedAttributes>
+                </Activity>
+                <Activity Id="hsubflow_react_upon_exception" Name="HSubflow react upon exception">
+                    <Implementation>
+                        <No/>
+                    </Implementation>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="230"/>
+                        <ExtendedAttribute Name="YOffset" Value="170"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <Transitions>
+                <Transition From="hsubflow_throws_exception" Id="subflow_handles_exception_Tra2" Name="Transition" To="hsubflow_react_upon_exception">
+                    <Condition Type="EXCEPTION">org.mozilla.javascript.JavaScriptException</Condition>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="RoutingType" Value="NOROUTING"/>
+                    </ExtendedAttributes>
+                </Transition>
+            </Transitions>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="FreeTextExpressionParticipant;hsubflow_throws_exception;110;60;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;hsubflow_throws_exception;460;60;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;hsubflow_react_upon_exception;460;170;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+        <WorkflowProcess AccessLevel="PRIVATE" Id="subflow_does_not_handle_exception" Name="Subflow does not handle exception">
+            <ProcessHeader DurationUnit="D">
+                <Created>2004-05-24 11:21:56</Created>
+            </ProcessHeader>
+            <RedefinableHeader PublicationStatus="UNDER_TEST">
+                <Version>Version</Version>
+            </RedefinableHeader>
+            <Activities>
+                <Activity Id="NHsubflow_throws_exception" Name="NHSubflow throws exception">
+                    <Implementation>
+                        <Tool Id="throwException" Type="APPLICATION"/>
+                    </Implementation>
+                    <StartMode>
+                        <Automatic/>
+                    </StartMode>
+                    <FinishMode>
+                        <Automatic/>
+                    </FinishMode>
+                    <ExtendedAttributes>
+                        <ExtendedAttribute Name="ParticipantID" Value="FreeTextExpressionParticipant"/>
+                        <ExtendedAttribute Name="XOffset" Value="320"/>
+                        <ExtendedAttribute Name="YOffset" Value="53"/>
+                    </ExtendedAttributes>
+                </Activity>
+            </Activities>
+            <ExtendedAttributes>
+                <ExtendedAttribute Name="StartOfWorkflow" Value="FreeTextExpressionParticipant;NHsubflow_throws_exception;100;53;NOROUTING"/>
+                <ExtendedAttribute Name="EndOfWorkflow" Value="FreeTextExpressionParticipant;NHsubflow_throws_exception;569;53;NOROUTING"/>
+                <ExtendedAttribute Name="ParticipantVisualOrder" Value="FreeTextExpressionParticipant;"/>
+            </ExtendedAttributes>
+        </WorkflowProcess>
+    </WorkflowProcesses>
+    <ExtendedAttributes>
+        <ExtendedAttribute Name="MadeBy" Value="JaWE"/>
+        <ExtendedAttribute Name="Version" Value="1.2"/>
+    </ExtendedAttributes>
+</Package>
